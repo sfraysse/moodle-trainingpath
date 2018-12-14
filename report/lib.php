@@ -80,9 +80,9 @@ function trainingpath_report_get_score_class($score, $colors) {
 function trainingpath_report_get_score_color($score, $colors) {
 	usort($colors, 'trainingpath_report_get_score_color_cmp');
 	foreach($colors as $item) {
-		if (floatval($score) < floatval($item->lt)) return $item->color;
+		if (floatval($score) < floatval($item->lt)) break;
 	}
-	return '';
+	return $item->color;
 }
 function trainingpath_report_get_score_color_cmp($a, $b) { return ($a->lt < $b->lt) ? -1 : 1; }
 
