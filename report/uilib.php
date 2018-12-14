@@ -489,7 +489,7 @@ function trainingpath_report_get_group_html($cmid, $learningpath, $groupId, $dat
 		
 		// Certificate & status
 		$url = (new moodle_url('/mod/trainingpath/report/certificate.php', array('cmid'=>$cmid, 'group_id'=>$groupId, 'certificate_id'=>$certificate->id)))->out();
-		$content = '<a href="'.$url.'"><h4>['.$certificate->code.'] '.$certificate->title.'</h4><a>';
+		$content = '<a href="'.$url.'"><h4 style="margin-bottom:22px;">['.$certificate->code.'] '.$certificate->title.'</h4><a>';
 		$statusData = trainingpath_report_get_indicator_data($certificate->track, $learningpath);
 		$status = trainingpath_report_get_indicator_html($statusData, 'right-align');
 		

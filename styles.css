@@ -255,6 +255,7 @@ table.trainingpath-table tbody.collapse.in {
     text-align: center;
     padding: 5px 10px;
     margin-right: 3px;
+    margin-bottom: 3px;
 }
 .trainingpath-bar-item.trainingpath-completed {
     background-color: #85C440;
@@ -377,6 +378,7 @@ table.trainingpath-table tbody.collapse.in {
 .trainingpath-indicators {
     margin-bottom: 20px;
 }
+.trainingpath-title-status .trainingpath-indicators,
 .trainingpath-card-right .trainingpath-indicators {
     margin-bottom: 0;
 }
