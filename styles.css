@@ -1,0 +1,517 @@
+
+/* * *************************************************************
+ *  This script has been developed for Moodle - http://moodle.org/
+ *
+ *  You can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+  *
+ * ************************************************************* */
+
+
+/*------------------------ Generic ----------------------*/
+
+.trainingpath-text-right { text-align: right !important; }
+.trainingpath-text-middle { vertical-align: middle !important; }
+.trainingpath-padding-left { padding-left: 20px !important; }
+
+
+/*------------------------ Page specific ----------------------*/
+
+
+/* eATPL Activity Form */
+
+#page-mod-trainingpath-mod #id_colors input {
+    color: #ffffff;
+}
+
+/* eATPL Edit Activites Page */
+/* Let dropup menu pas over the card div */
+
+#page-mod-trainingpath-edit-activities #region-main>.card {
+    overflow-x: visible !important;
+}
+
+/* eATPL Content & Eval Activity Page */
+
+#page-mod-trainingpath-view-activity_content .trainingpath-activity-status .scormlite-status,
+#page-mod-trainingpath-view-activity_content .trainingpath-activity-status .scormlite-time,
+#page-mod-trainingpath-view-activity_eval .trainingpath-activity-status .scormlite-status,
+#page-mod-trainingpath-view-activity_eval .trainingpath-activity-status .scormlite-time,
+#page-mod-trainingpath-view-activity_eval .trainingpath-activity-status .scormlite-score
+{
+    display: none;
+}
+
+/*------------------------ Title ----------------------*/
+
+.trainingpath-title h3 {
+    padding-right: 200px;
+    margin-bottom: 20px;
+}
+.trainingpath-title:after {
+    clear: both;
+    display: block;
+    content: '';
+}
+.trainingpath-title-status {
+    float: right;
+    width: 183px;
+}
+
+/*------------------------ Icons ----------------------*/
+
+.trainingpath-card-left .icon {
+    font-size: 22px;
+}
+.icon-reverse .icon {
+    color: #ffffff;
+}
+
+/*------------------------ Comments ----------------------*/
+
+.trainingpath-comments {
+    background-image: url([[pix:mod_trainingpath|comments]]);
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    background-size: 48px 48px;
+    padding-left: 60px;
+    margin-bottom: 20px;
+    min-height: 50px;
+}
+.trainingpath-comment {
+    padding: 10px;
+    border: 1px solid #dddddd;
+    color: #444444;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+
+/*------------------------ Export ----------------------*/
+
+.trainingpath-export {
+    padding: 20px;
+    background-color: #f4f4f4;
+    margin-top: 20px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+
+
+/*------------------------ Collapsing ----------------------*/
+
+table.trainingpath-table tbody.collapse.in {
+   display: table-row-group;
+}
+[data-toggle="collapse"].trainingpath-custom i {
+    padding-right: 10px;
+}
+[data-toggle="collapse"].trainingpath-custom i:before{   
+  content: "\f078";
+}
+
+[data-toggle="collapse"].trainingpath-custom.collapsed i:before{
+  content: "\f054";
+}
+
+
+/*------------------------ Cards ----------------------*/
+
+#trainingpath-cards, .trainingpath-cards {
+    margin-bottom: 20px;
+}
+
+.trainingpath-card-wrapper {
+    background: #f5f5f5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border-bottom: 1px solid #dddddd;
+    margin-bottom: 15px;
+}
+.trainingpath-card-wrapper.trainingpath-highlight {
+    border-left: 3px solid #EF7A00;
+}
+.trainingpath-card-wrapper:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.trainingpath-card-wrapper .trainingpath-card-left {
+    width: 50px;
+    float: left;
+}
+.trainingpath-card-wrapper .trainingpath-card-right {
+    float: right;
+    width: 60px;
+    padding-top: 1px;
+    text-align: right;
+}
+.trainingpath-card-wrapper.trainingpath-left-column .trainingpath-card {
+    padding-left: 50px;
+}
+.trainingpath-card-wrapper.trainingpath-right-column .trainingpath-card {
+    padding-right: 60px;
+}
+.trainingpath-card-wrapper.trainingpath-left-right-columns .trainingpath-card {
+    padding-left: 50px;
+    padding-right: 60px;
+}
+.trainingpath-card-wrapper.trainingpath-left-column .trainingpath-card .card-header:after,
+.trainingpath-card-wrapper.trainingpath-right-column .trainingpath-card .card-header:after,
+.trainingpath-card-wrapper.trainingpath-left-right-columns .trainingpath-card .card-header:after
+{
+    content: none !important;
+    clear: none !important;
+}
+.trainingpath-card-wrapper.trainingpath-left-column .card-header,
+.trainingpath-card-wrapper.trainingpath-left-right-columns .card-header,
+.trainingpath-card-wrapper.trainingpath-left-column .card-block,
+.trainingpath-card-wrapper.trainingpath-left-right-columns .card-block
+{
+    padding-left: 10px !important;
+}
+
+.trainingpath-card {
+    background: transparent !important;
+    border: none !important;
+    margin-bottom: 0 !important;
+}
+
+.trainingpath-card .card-header {
+    background-color: transparent !important;
+    border: none !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+.trainingpath-card .card-header.with-tools {
+    padding-top: 0px;
+    padding-right: 6px;
+}
+
+.trainingpath-card .card-tools {
+    text-align: right;
+}
+
+.trainingpath-card .card-header .card-title {
+    font-size: 18px !important;
+    color: #444444 !important;
+}
+.trainingpath-card .card-tools i {
+    cursor: pointer;
+    margin-left: 0 !important;
+}
+
+.trainingpath-card .card-block {
+    padding-top: 0;
+    font-size: 12px;
+    color: #777777;
+    padding-bottom: 0 !important;
+}
+
+.trainingpath-card .card-block p:last-child {
+    margin-bottom: 0;
+}
+
+.trainingpath-card .trainingpath-card-space {
+    height: 10px;
+}
+
+
+/*------------------------ Items bar ----------------------*/
+
+.trainingpath-items-bar {
+    margin-bottom: 20px;
+}
+.trainingpath-items-bar:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+.trainingpath-bar-item {
+    width: 40px;
+    float: left;
+    text-align: center;
+    padding: 5px 10px;
+    margin-right: 3px;
+}
+.trainingpath-bar-item.trainingpath-completed {
+    background-color: #85C440;
+}
+.trainingpath-bar-item.trainingpath-incomplete {
+    background-color: #EF7A00;
+}
+.trainingpath-bar-item.trainingpath-notattempted {
+    background-color: #dddddd;
+}
+.trainingpath-bar-item.trainingpath-completed,
+.trainingpath-bar-item.trainingpath-incomplete,
+.trainingpath-bar-item.trainingpath-completed a,
+.trainingpath-bar-item.trainingpath-incomplete a,
+.trainingpath-bar-item.trainingpath-completed a:hover,
+.trainingpath-bar-item.trainingpath-incomplete a:hover,
+.trainingpath-bar-item.trainingpath-completed a:active,
+.trainingpath-bar-item.trainingpath-incomplete a:active,
+.trainingpath-bar-item.trainingpath-completed a:visited,
+.trainingpath-bar-item.trainingpath-incomplete a:visited
+{
+    color: #ffffff;    
+}
+.trainingpath-bar-item.trainingpath-notattempted,
+.trainingpath-bar-item.trainingpath-notattempted a,
+.trainingpath-bar-item.trainingpath-notattempted a:hover,
+.trainingpath-bar-item.trainingpath-notattempted a:active,
+.trainingpath-bar-item.trainingpath-notattempted a:visited
+{
+    color: #333333;    
+}
+
+/*------------------------ Commands ----------------------*/
+
+.trainingpath-commands {
+    margin-top: 10px;
+}
+
+.trainingpath-commands a, .trainingpath-commands input {
+    margin-right: 5px;
+}
+
+
+/*------------------------ Activities layout ----------------------*/
+
+.trainingpath-activity-content,
+.trainingpath-activity-description
+{
+    margin-bottom: 10px;
+}
+.trainingpath-activity-information,
+.trainingpath-activity-session-information,
+.trainingpath-activity-status
+{
+    background-color: #f5f5f5;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.trainingpath-activity-status p {
+    margin-bottom: 5px;
+}
+.trainingpath-activity-content p:last-child,
+.trainingpath-activity-description p:last-child,
+.trainingpath-activity-status p:last-child,
+.trainingpath-activity-description p:last-child,
+.trainingpath-activity-information p:last-child,
+.trainingpath-activity-session-information p:last-child
+{
+    margin-bottom: 0;
+}
+.trainingpath-card-wrapper .trainingpath-card-left .trainingpath-activity-type {
+    padding: 8px 0 10px 10px;
+    display: block;
+    float: none;
+}
+.trainingpath-card-wrapper .trainingpath-card-left .trainingpath-activity-type img {
+    width: 36px;
+    height: 36px;
+}
+.trainingpath-card-wrapper .trainingpath-card-right img {
+    width: 36px;
+    height: 36px;
+    margin: 10px 10px 0 0;
+}
+
+
+/*------------------------ Tables ----------------------*/
+
+.trainingpath-table {
+    margin-bottom: 20px !important;
+}
+.trainingpath-table .form-group,
+.trainingpath-table .form-group label
+{
+    margin: 0;
+    padding: 0;
+}
+.trainingpath-table th.trainingpath-cell-status,
+.trainingpath-table td.trainingpath-cell-status {
+    padding: 0 !important;
+    width: 60px !important;
+    height: 40px !important;
+    vertical-align: middle;
+}
+
+
+/*------------------------ Schedule ----------------------*/
+
+.trainingpath-schedule {
+    margin-bottom: 20px;
+    color: #777;
+}
+.trainingpath-card .trainingpath-schedule {
+    margin-bottom: 10px;
+}
+
+
+/*------------------------ Default indicators ----------------------*/
+
+.trainingpath-indicators {
+    margin-bottom: 20px;
+}
+.trainingpath-card-right .trainingpath-indicators {
+    margin-bottom: 0;
+}
+.trainingpath-indicators:after {
+    display: block;
+    content: '';
+    clear: both;
+}
+.trainingpath-card-right .trainingpath-indicators:after {
+    content: none;
+    clear: none;
+}
+.trainingpath-score, .trainingpath-time, .trainingpath-progress, .trainingpath-fake-indicator {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    border-style: solid;
+    border-width: 2px;
+    float: left;
+    margin-right: 1px;
+    margin-bottom: 1px;
+    font-size: 14px;
+}
+
+.trainingpath-fake-indicator {
+    border: none;
+}
+
+.trainingpath-score {
+    color: #ffffff;
+    background-image: url([[pix:mod_trainingpath|badge_white]]);
+    background-position: 5px 9px;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding: 7px 0 0 21px;
+}
+
+.trainingpath-dual-score, .trainingpath-with-review, .trainingpath-with-alert {
+    padding-top: 0px;
+}
+.trainingpath-remedial, .trainingpath-review, .trainingpath-time-alert {
+    font-size: 10px;
+    width: 30px;
+    margin-left: 5px;
+}
+.trainingpath-time-alert {
+    background-color: #D53B3B;
+}
+.trainingpath-review img {
+    width: 16px;
+    height: 16px;
+}
+.trainingpath-time-alert img {
+    width: 12px;
+    height: 12px;
+}
+
+.trainingpath-time {
+    background-position: 5px 8px;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding: 7px 0 0 21px;
+    font-size: 12px;
+}
+.trainingpath-time.trainingpath-critical {
+    background-image: url([[pix:mod_trainingpath|duration_red]]);
+}
+.trainingpath-time.trainingpath-minimal {
+    background-image: url([[pix:mod_trainingpath|duration_orange]]);
+}
+.trainingpath-time.trainingpath-nominal {
+    background-image: url([[pix:mod_trainingpath|duration_yellow]]);
+}
+.trainingpath-time.trainingpath-optimal {
+    background-image: url([[pix:mod_trainingpath|duration_green]]);
+}
+.trainingpath-with-passing {
+    padding-top: 3px;
+}
+.trainingpath-time-passing {
+    font-size: 10px;
+    margin-top: -5px;
+}
+
+.trainingpath-progress {
+    border-color: #dddddd;
+    border-width: 1px;
+    border-style: dotted;
+    padding: 0;
+    font-size: 10px;
+}
+.trainingpath-progress-frame {
+    width: 40px;
+    margin-left: 10px;
+    height: 10px;
+    margin-top: 8px;
+    border-style: solid;
+    border-width: 2px;
+    padding: 1px 1px 1px 1px;
+}
+.trainingpath-progress-value {
+    height: 100%;
+}
+.trainingpath-completed {
+    color: #85C440;
+}
+.trainingpath-completed .trainingpath-progress-frame {
+    border-color: #85C440;
+}
+.trainingpath-completed .trainingpath-progress-value {
+    background-color: #85C440;
+}
+.trainingpath-incomplete {
+    color: #EF7A00;
+}
+.trainingpath-incomplete .trainingpath-progress-frame {
+    border-color: #EF7A00;
+}
+.trainingpath-incomplete .trainingpath-progress-value {
+    background-color: #EF7A00;
+}
+.trainingpath-notattempted {
+    color: #D53B3B;
+}
+.trainingpath-notattempted .trainingpath-progress-frame {
+    border-color: #D53B3B;
+}
+.trainingpath-notattempted .trainingpath-progress-value {
+    background-color: #D53B3B;
+}
+
+
+
+
+
+
+
+
