@@ -37,5 +37,8 @@ if ($ADMIN->fulltree) {
 	$jsoncolors = '{"lt_min":"#D53B3B", "lt_nominal":"#EF7A00", "lt_threshold":"#FDC200", "lt_max":"#85C440", "threshold":10}';
 	$settings->add(new admin_setting_configtext('trainingpath/time_colors', get_string('time_colors', 'trainingpath'), get_string('time_colors_desc','trainingpath'), $jsoncolors, PARAM_RAW, 100));
 
+    // Player close button
+	$settings->add(new admin_setting_configcheckbox('trainingpath/displayclosebutton', get_string('displayclosebutton', 'scormlite'), get_string('displayclosebuttondesc', 'scormlite'), 0));
+	
 }
 
