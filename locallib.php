@@ -266,11 +266,11 @@ function trainingpath_get_default_activity_schedule($type, $complementary = fals
 	$schedule = new stdClass();
 	switch($type) {
 		case EATPL_ACTIVITY_TYPE_CONTENT :
-			$schedule->access = EATPL_ACCESS_ON_COMPLETION;
+			$schedule->access = get_config('trainingpath', 'prefered_activity_access');
 			break;
 		case EATPL_ACTIVITY_TYPE_EVAL :
 			if ($remedial) $schedule->access = EATPL_ACCESS_AS_REMEDIAL;
-			else $schedule->access = EATPL_ACCESS_ON_COMPLETION;
+			else $schedule->access = get_config('trainingpath', 'prefered_activity_access');
 			break;
 		case EATPL_ACTIVITY_TYPE_CLASSROOM :
 		case EATPL_ACTIVITY_TYPE_VIRTUAL :

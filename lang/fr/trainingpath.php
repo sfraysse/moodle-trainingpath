@@ -36,6 +36,12 @@ $string['trainingpath:addinstance'] = 'Définir un parcours de formation';
 $string['trainingpath:editschedule'] = 'Editer un planning de formation';
 
 
+// ------------------------- Settings ---------------------------
+
+$string['prefered_activity_access'] = 'Accès aux activités';
+$string['prefered_activity_access_desc'] = "Valeur par défaut de l'accès aux activités dans les réglages du planning.";
+
+
 // ------------------------- Common terms ---------------------------
 
 $string['home'] = 'Accueil';

@@ -22,6 +22,8 @@ defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
 
+	require_once($CFG->dirroot . '/mod/trainingpath/locallib.php');
+
 	// Passing score (mainly for certificates)
     $settings->add(new admin_setting_configtext('trainingpath/passing_score', get_string('passing_score', 'trainingpath'), get_string('passing_score_desc','trainingpath'), 75, PARAM_INT));
 
@@ -39,6 +41,10 @@ if ($ADMIN->fulltree) {
 
     // Player close button
 	$settings->add(new admin_setting_configcheckbox('trainingpath/displayclosebutton', get_string('displayclosebutton', 'scormlite'), get_string('displayclosebuttondesc', 'scormlite'), 0));
-	
+
+	// Prefered activity access: On Completion / Access
+	$options = trainingpath_access_select([EATPL_ACCESS_ON_COMPLETION, EATPL_ACCESS_OPEN]);
+	$settings->add(new admin_setting_configselect('trainingpath/prefered_activity_access', get_string('prefered_activity_access', 'trainingpath'), get_string('prefered_activity_access_desc', 'trainingpath'), EATPL_ACCESS_ON_COMPLETION, $options));
+
 }
 

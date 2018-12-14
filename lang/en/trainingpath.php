@@ -36,6 +36,12 @@ $string['trainingpath:addinstance'] = 'Create a training path';
 $string['trainingpath:editschedule'] = 'Edit a training schedule';
 
 
+// ------------------------- Settings ---------------------------
+
+$string['prefered_activity_access'] = 'Prefered activity access';
+$string['prefered_activity_access_desc'] = 'Default value of the access setting on activities scheduling.';
+
+
 // ------------------------- Common terms ---------------------------
 
 $string['home'] = 'Home';
