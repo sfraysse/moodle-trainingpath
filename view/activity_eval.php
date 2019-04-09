@@ -80,7 +80,7 @@ $html = '';
 $res = scormlite_get_mystatus($cm, $sco, false, false);
 $html .= $res[0];
 $trackdata = $res[1];
-// if (!$item->complementary) trainingpath_report_record_scormlite_track($trackdata, $item, $learningpath, true);
+if (!$item->complementary) trainingpath_report_record_scormlite_track($trackdata, $item, $learningpath, true);
 
 
 //------------------------------------------- Display activity -------------------------------------------//
