@@ -54,12 +54,13 @@ class mform_content extends moodleform {
 			$mform->addElement('html', '
 					</td>
 					<td class="trainingpath-text-right trainingpath-text-middle">');
-			$mform->addElement('advcheckbox', 'force['.$user->id.']', '', '', null, array(0, 1));
+			$mform->addElement('advcheckbox', 'force['.$user->id.']', '', '', array('group' => 1), array(0, 1));
 			$mform->addElement('html', '
 					</td>
 				</tr>');
 		}
 		$mform->addElement('html', '</tbody></table>');
+		$this->add_checkbox_controller(1);
 
 		
 		//-------------------------------------------------------------------------------
