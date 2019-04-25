@@ -270,7 +270,7 @@ function trainingpath_get_default_activity_schedule($type, $complementary = fals
 			break;
 		case EATPL_ACTIVITY_TYPE_EVAL :
 			if ($remedial) $schedule->access = EATPL_ACCESS_AS_REMEDIAL;
-			else $schedule->access = get_config('trainingpath', 'prefered_activity_access');
+			else $schedule->access = get_config('trainingpath', 'prefered_activity_access_eval');
 			break;
 		case EATPL_ACTIVITY_TYPE_CLASSROOM :
 		case EATPL_ACTIVITY_TYPE_VIRTUAL :
