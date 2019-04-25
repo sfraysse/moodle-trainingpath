@@ -175,17 +175,25 @@ function trainingpath_db_update_rolldown_certificate($itemId) {
 	
    // Use transactions !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    
-   // Calculate parts
-   foreach($data as $sequenceId => $sequenceData) {
-	  if ($total > 0) $sequenceData->percent = $sequenceData->total * 100 / $total;
-	  else $sequenceData->percent = 0;
-	  $nominal = intVal($sequenceData->percent * $certificate->duration / 100);
-	  $sequence = $DB->get_record('trainingpath_item', array('id'=>$sequenceId, 'type'=>EATPL_ITEM_TYPE_SEQUENCE));
-	  $sequence->duration_down = $nominal;
-	  $sequence->duration_up = $sequenceData->total;
-	  $sequence->evaluation = $sequenceData->evaluation;
-	  $DB->update_record("trainingpath_item", $sequence);
-   }
+    // Calculate parts
+    foreach($data as $sequenceId => $sequenceData) {
+        if ($total > 0) $sequenceData->percent = $sequenceData->total * 100 / $total;
+        else $sequenceData->percent = 0;
+        $nominal = intVal($sequenceData->percent * $certificate->duration / 100);
+        $sequence = $DB->get_record('trainingpath_item', array('id'=>$sequenceId, 'type'=>EATPL_ITEM_TYPE_SEQUENCE));
+        $sequence->duration_down = $nominal;
+        $sequence->duration_up = $sequenceData->total;
+        $sequence->evaluation = $sequenceData->evaluation;
+        $DB->update_record("trainingpath_item", $sequence);
+      
+        // Calculate the duration_down for each activity
+        $activities = $DB->get_records('trainingpath_item', array('parent_id' => $sequenceId, 'type' => EATPL_ITEM_TYPE_ACTIVITY));
+        foreach ($activities as $activity) {
+            if (!isset($activity->duration) || !$sequence->duration_up) continue;
+            $activity->duration_down = intval($activity->duration * $sequence->duration_down / $sequence->duration_up);
+            $DB->update_record("trainingpath_item", $activity);
+        }
+    }
 }
 
 // Rolldown batch: impact on calculated durations only

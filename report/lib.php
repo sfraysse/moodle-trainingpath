@@ -158,13 +158,16 @@ function trainingpath_report_force_content_completion($learningpath, $userId, $f
 	$currentTrack = $DB->get_record('trainingpath_tracks', array('context_id'=>$item->id, 'context_type'=>EATPL_ITEM_TYPE_ACTIVITY, 'user_id'=>$userId));
 	if (!$currentTrack) $currentTrack = new stdClass();
 	
+	// Forced time
+	$forced_time = isset($item->duration_down) && $item->duration_down ? $item->duration_down : $item->duration;
+	
 	// Update track
 	$currentTrack->context_id = $item->id;
 	$currentTrack->context_type = EATPL_ITEM_TYPE_ACTIVITY;
 	$currentTrack->user_id = $userId;
 	$currentTrack->attempt = 1;
 	$currentTrack->completion = EATPL_COMPLETION_COMPLETED;
-	if (!isset($currentTrack->time_spent)) $currentTrack->time_spent = $item->duration;
+	if (!isset($currentTrack->time_spent)) $currentTrack->time_spent = $forced_time;
 	$currentTrack->time_status = EATPL_TIME_STATUS_OPTIMAL;
 	$currentTrack->last_attempt = true;
 	$currentTrack->progress_unit = EATPL_PROGRESS_UNIT_STATUS;
@@ -179,7 +182,7 @@ function trainingpath_report_force_content_completion($learningpath, $userId, $f
 	$DB->delete_records('scormlite_scoes_track', array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1));
 	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'x.start.time', 'value'=>time(), 'timemodified'=>time());
 	$DB->insert_record("scormlite_scoes_track", $scoTrack);
-	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'cmi.total_time', 'value'=>trainingpath_report_get_time_scorm2004($item->duration), 'timemodified'=>time());
+	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'cmi.total_time', 'value'=>trainingpath_report_get_time_scorm2004($forced_time), 'timemodified'=>time());
 	$DB->insert_record("scormlite_scoes_track", $scoTrack);
 	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'cmi.completion_status', 'value'=>'completed', 'timemodified'=>time());
 	$DB->insert_record("scormlite_scoes_track", $scoTrack);
