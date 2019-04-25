@@ -77,7 +77,7 @@ class mform_schedule_activities extends moodleform {
 				
 			} else if ($activity->activity_type == EATPL_ACTIVITY_TYPE_VIRTUAL || $activity->activity_type == EATPL_ACTIVITY_TYPE_CLASSROOM) {
 
-				$options = array(EATPL_ACCESS_CLOSED, EATPL_ACCESS_ON_DATES);
+				$options = array(EATPL_ACCESS_CLOSED, EATPL_ACCESS_OPEN, EATPL_ACCESS_ON_DATES);
 				if ($activity->complementary) $options[] = EATPL_ACCESS_HIDDEN;
 				$mform->addElement('select', 'access['.$activity->id.']', get_string('access', 'trainingpath'), trainingpath_access_select($options));
 				$mform->setDefault('access['.$activity->id.']', $schedule->access);
