@@ -3,7 +3,7 @@
 
 # Versions
 
-Vous êtes sur la page de la **version 3.4.4** du plugin Assessment Path, dernière version compatible avec **Moodle 3.4**.
+Vous êtes sur la page de la **version 3.4.4** du plugin Training Path, dernière version compatible avec **Moodle 3.4**.
 
 Ce plugin n'existe pas encore pour les versions plus récentes de Moodle.
 
@@ -19,7 +19,7 @@ Ce plugin n'existe pas encore pour les versions plus récentes de Moodle.
 
 ## Procédure d'installation
 
-- Télécharger la dernière version du plugin : https://github.com/sfraysse/moodle-assessmentpath/archive/v3.4.4.zip.
+- Télécharger la dernière version du plugin : https://github.com/sfraysse/moodle-trainingpath/archive/v3.4.4.zip.
 - Dans `Moodle > Administration > Plugins > Install plugins`, importer le fichier ZIP du plugin.
 - Suivre la procédure d'installation.
 
