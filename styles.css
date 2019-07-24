@@ -18,6 +18,29 @@
  * ************************************************************* */
 
 
+/* --------------- Moodle 3.5 --------------- */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500 !important;
+}
+.path-mod-trainingpath-view #region-main .breadcrumb,
+.path-mod-trainingpath-edit #region-main .breadcrumb {
+    padding: .75rem 0 !important;
+}
+.trainingpath-card .card-block {
+    padding: 0 1.25rem !important;
+}
+.trainingpath-table th {
+    margin-bottom: 20px !important;
+    border-bottom: 2px solid #f4f4f4 !important;
+    background-color: #f4f4f4 !important;
+    padding: .6rem !important;
+}
+.card-tools i.icon {
+    color: #1177d1 !important;
+}
+
+
 /*------------------------ Generic ----------------------*/
 
 .trainingpath-text-right { text-align: right !important; }
