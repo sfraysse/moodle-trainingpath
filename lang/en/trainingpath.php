@@ -401,3 +401,48 @@ $string['reset_schedules'] = 'Reset schedules';
 $string['statistics'] = 'Statistics';
 
 
+// ------------------------- Privacy ---------------------------
+
+
+// SCORM Lite tracks
+$string['privacy:metadata:trainingpath_scoes_track'] = 'Data tracked by the SCORM Lite activities';
+$string['privacy:metadata:scoes_track:userid'] = 'The ID of the user who accessed the SCORM Lite activity';
+$string['privacy:metadata:scoes_track:attempt'] = 'The attempt number';
+$string['privacy:metadata:scoes_track:element'] = 'The name of the element to be tracked';
+$string['privacy:metadata:scoes_track:value'] = 'The value of the given element';
+$string['privacy:metadata:scoes_track:timemodified'] = 'The time when the tracked element was last modified';
+
+// Training Path tracks
+$string['privacy:metadata:trainingpath_tracks'] = 'Data tracked by Training Path';
+$string['privacy:metadata:tracks:context_type'] = 'The type of the tracked context';
+$string['privacy:metadata:tracks:context_id'] = 'The ID of the tracked context';
+$string['privacy:metadata:tracks:user_id'] = 'The ID of the tracked user';
+$string['privacy:metadata:tracks:attempt'] = 'The attempt number';
+$string['privacy:metadata:tracks:last_attempt'] = 'Is this attempt the last attempt?';
+$string['privacy:metadata:tracks:completion'] = 'Completion of the activity';
+$string['privacy:metadata:tracks:success'] = 'Success of the initial evaluation';
+$string['privacy:metadata:tracks:success_remedial'] = 'Success of the remedial evaluation';
+$string['privacy:metadata:tracks:score'] = 'Score of the initial evaluation';
+$string['privacy:metadata:tracks:score_remedial'] = 'Score of the remedial evaluation';
+$string['privacy:metadata:tracks:progress_value'] = 'Learner progress on this unit';
+$string['privacy:metadata:tracks:progress_max'] = 'Max value of the progress value';
+$string['privacy:metadata:tracks:progress_unit'] = 'Unit of the progress value';
+$string['privacy:metadata:tracks:time_spent'] = 'Time spent by the learner on this unit';
+$string['privacy:metadata:tracks:time_status'] = 'Time status for the learner on this unit';
+$string['privacy:metadata:tracks:time_passing'] = 'Minimum time to spend on this unit';
+
+// Comments
+$string['privacy:metadata:trainingpath_comments'] = 'Comments entered by the instructors on the Training Path';
+$string['privacy:metadata:comments:contexttype'] = 'The type of the comment context';
+$string['privacy:metadata:comments:contextid'] = 'The ID of the comment context';
+$string['privacy:metadata:comments:userid'] = 'The ID of the user who performed the Assessment Path';
+$string['privacy:metadata:comments:groupid'] = 'The ID of the group the user belongs to';
+$string['privacy:metadata:comments:comment'] = 'The comment entered for this user';
+
+// Exports
+$string['item'] = 'Item';
+$string['items'] = 'Items';
+$string['mystatus'] = 'My status';
+$string['comments'] = 'Comments';
+$string['itemdescr'] = 'Item description';
+
