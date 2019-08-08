@@ -265,12 +265,17 @@ function trainingpath_report_force_eval_score($learningpath, $userId, $score, $i
 
 // Record session track
 
-function trainingpath_report_record_session_track($learningpath, $userId, $participation, $item, $schedule) {
-	global $DB;
+function trainingpath_report_record_session_track($course, $cm, $learningpath, $userId, $participation, $item, $schedule) {
+	global $DB, $CFG;
 
 	// Get existing track
 	$currentTrack = $DB->get_record('trainingpath_tracks', array('context_id'=>$item->id, 'context_type'=>EATPL_ITEM_TYPE_ACTIVITY, 'user_id'=>$userId));
-	if (!$currentTrack) $currentTrack = new stdClass();
+	if ($currentTrack) {
+		$oldtrack = clone $currentTrack;
+	} else {
+		$oldtrack = null;
+		$currentTrack = new stdClass();
+	}
 	
 	// Update track
 	$currentTrack->context_id = $item->id;
@@ -292,9 +297,22 @@ function trainingpath_report_record_session_track($learningpath, $userId, $parti
 	$currentTrack->progress_value = $currentTrack->completion;
 
 	// Save track
-	if (!isset($currentTrack->id)) $currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
-	else $DB->update_record('trainingpath_tracks', $currentTrack);
-	
+	if (isset($currentTrack->id)) {
+		$DB->update_record('trainingpath_tracks', $currentTrack);
+	} else {
+		$currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
+	}
+
+	// Log
+	if ($currentTrack->completion == EATPL_COMPLETION_COMPLETED && (
+		is_null($oldtrack) 
+		|| $oldtrack->completion != $currentTrack->completion 
+		|| $oldtrack->time_spent != $currentTrack->time_spent
+	)) {
+		require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
+		trainingpath_trigger_item_event('classroom_session_attended', $course, $cm, $learningpath, $item, $userId, (array)$currentTrack);
+	}
+
 	// Rollup
 	trainingpath_report_rollup_track($learningpath, $item->parent_id, EATPL_ITEM_TYPE_SEQUENCE, $userId);
 }
@@ -303,14 +321,19 @@ function trainingpath_report_record_session_track($learningpath, $userId, $parti
 
 function trainingpath_report_record_scormlite_track($trackdata, $item, $learningpath, $eval = false) {
 	global $DB;
-	
+
 	if ($trackdata->status == 'notattempted') return;
 
 	// Use transaction !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	// Get existing track
 	$currentTrack = $DB->get_record('trainingpath_tracks', array('context_id'=>$item->id, 'context_type'=>EATPL_ITEM_TYPE_ACTIVITY, 'user_id'=>$trackdata->userid, 'attempt'=>$trackdata->attemptnb));
-	if (!$currentTrack) $currentTrack = new stdClass();
+	if ($currentTrack) {
+		$oldtrack = clone $currentTrack;
+	} else {
+		$oldtrack = null;
+		$currentTrack = new stdClass();
+	}
 	
 	// Update track
 	$currentTrack->context_id = $item->id;
@@ -348,8 +371,11 @@ function trainingpath_report_record_scormlite_track($trackdata, $item, $learning
 	}
 
 	// Save track
-	if (!isset($currentTrack->id)) $currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
-	else $DB->update_record('trainingpath_tracks', $currentTrack);
+	if (isset($currentTrack->id)) {
+		$DB->update_record('trainingpath_tracks', $currentTrack);
+	} else {
+		$currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
+	}
 	
 	// Get and update previous track
 	if ($eval && $trackdata->attemptnb > 1) {

@@ -42,7 +42,14 @@ require_login($course, false, $cm);
 $access = trainingpath_check_view_permission($course, $cm);
 if (isset($access->schedule)) $scheduleInfo = trainingpath_get_schedule_access_info(EATPL_ITEM_TYPE_PATH, $access->schedule, true);
 
-// Page setup
+
+//------------------------------------------- Logs -------------------------------------------//
+
+trainingpath_trigger_path_event('course_module_viewed', $course, $cm, $learningpath);
+
+
+//------------------------------------------- Page setup -------------------------------------------//
+
 ($access->permission != 'view' || $scheduleInfo->status == 'open') ? $tab = 'home' : $tab = null;
 trainingpath_view_setup_page($course, $tab);
 

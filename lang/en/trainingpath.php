@@ -403,7 +403,6 @@ $string['statistics'] = 'Statistics';
 
 // ------------------------- Privacy ---------------------------
 
-
 // SCORM Lite tracks
 $string['privacy:metadata:trainingpath_scoes_track'] = 'Data tracked by the SCORM Lite activities';
 $string['privacy:metadata:scoes_track:userid'] = 'The ID of the user who accessed the SCORM Lite activity';
@@ -445,4 +444,16 @@ $string['items'] = 'Items';
 $string['mystatus'] = 'My status';
 $string['comments'] = 'Comments';
 $string['itemdescr'] = 'Item description';
+
+
+// ------------------------- Events ---------------------------
+
+$string['event:gradebook_viewed'] = 'Gradebook viewed';
+$string['event:phases_viewed'] = 'Phase list viewed';
+$string['event:phase_viewed'] = 'Phase viewed';
+$string['event:themes_viewed'] = 'Theme list viewed';
+$string['event:theme_viewed'] = 'Theme viewed';
+$string['event:sequence_viewed'] = 'Sequence viewed';
+$string['event:activity_viewed'] = 'Activity viewed';
+$string['event:classroom_session_attended'] = 'Classroom session attended';
 

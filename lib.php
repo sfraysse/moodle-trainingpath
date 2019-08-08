@@ -377,7 +377,7 @@ function trainingpath_get_file_info($browser, $areas, $course, $cm, $context, $f
  * @return void this should never return to the caller
  */
 function trainingpath_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
-	global $CFG;	
+	global $CFG, $DB;	
 
 	// ScormLite
 	if ($filearea == 'content' || $filearea == 'package') {
@@ -394,6 +394,8 @@ function trainingpath_pluginfile($course, $cm, $context, $filearea, $args, $forc
 	// Files
 	if ($filearea === 'files_content') {
 		$revision = (int)array_shift($args); // prevents caching problems - ignored here
+		$lifetime = 0; // no caching here
+
 	} else if ($filearea === 'files_package') {
 		if (!has_capability('moodle/course:manageactivities', $context)) {
 			return false;
@@ -415,6 +417,20 @@ function trainingpath_pluginfile($course, $cm, $context, $filearea, $args, $forc
 	$fs = get_file_storage();
 	$file = $fs->get_file($context->id, 'mod_trainingpath', $filearea, $itemid, $filepath, $filename);
 	if (! $file || $file->is_directory()) return false;
+
+	// Log
+	if ($filearea === 'files_content') {
+		require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
+		$learningpath = $DB->get_record('trainingpath', array('id'=>$cm->instance), '*', MUST_EXIST);
+		$item = $DB->get_record('trainingpath_item', array('ref_id' => $itemid, 'activity_type' => EATPL_ACTIVITY_TYPE_FILES));
+		if ($item) {
+			$filerecord = $DB->get_record('trainingpath_files', array('id' => $itemid), '*', MUST_EXIST);
+			if ($filerecord->launch_file == $filename) {
+				trainingpath_trigger_item_event('activity_viewed', $course, $cm, $learningpath, $item);
+			}
+		}
+	}
+
     send_stored_file($file, $lifetime, 0, false, $options);
 }
 

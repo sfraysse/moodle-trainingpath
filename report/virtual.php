@@ -96,7 +96,7 @@ if ($mform->is_cancelled()) {
 	
 	// Participation
 	foreach($data->participation as $userId => $participation) {
-		trainingpath_report_record_session_track($learningpath, $userId, $participation, $activity, $session->schedule);
+		trainingpath_report_record_session_track($course, $cm, $learningpath, $userId, $participation, $activity, $session->schedule);
 	}
 	
 	// Redirect

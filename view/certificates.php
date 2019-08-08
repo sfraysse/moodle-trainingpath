@@ -41,6 +41,11 @@ require_login($course, false, $cm);
 trainingpath_check_view_permission_or_redirect($course, $cm);
 
 
+//------------------------------------------- Logs -------------------------------------------//
+
+trainingpath_trigger_path_event('themes_viewed', $course, $cm, $learningpath);
+
+
 //------------------------------------------- Page setup -------------------------------------------//
 
 trainingpath_view_setup_page($course, 'certificates');
