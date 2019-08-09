@@ -18,7 +18,7 @@ namespace mod_trainingpath\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-class themes_viewed extends course_module_viewed {
+class page_viewed extends course_module_viewed {
 
     /**
      * Return localised event name.
@@ -26,7 +26,7 @@ class themes_viewed extends course_module_viewed {
      * @return string
      */
     public static function get_name() {
-        return get_string('event:themes_viewed', 'trainingpath');
+        return get_string('event:page_viewed', 'trainingpath');
     }
 
     /**
@@ -35,17 +35,8 @@ class themes_viewed extends course_module_viewed {
      * @return string
      */
     public function get_description() {
-        return "The user with id '$this->userid' viewed the themes page of the '{$this->objecttable}' activity with " .
+        return "The user with id '$this->userid' viewed a page of the '{$this->objecttable}' activity with " .
             "course module id '$this->contextinstanceid'.";
-    }
-
-    /**
-     * Get URL related to the action.
-     *
-     * @return \moodle_url
-     */
-    public function get_url() {
-        return new \moodle_url("/mod/$this->objecttable/view/certificates.php", array('cmid' => $this->contextinstanceid));
     }
 
 }

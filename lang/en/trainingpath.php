@@ -448,12 +448,11 @@ $string['itemdescr'] = 'Item description';
 
 // ------------------------- Events ---------------------------
 
-$string['event:gradebook_viewed'] = 'Gradebook viewed';
-$string['event:phases_viewed'] = 'Phase list viewed';
-$string['event:phase_viewed'] = 'Phase viewed';
-$string['event:themes_viewed'] = 'Theme list viewed';
-$string['event:theme_viewed'] = 'Theme viewed';
-$string['event:sequence_viewed'] = 'Sequence viewed';
-$string['event:activity_viewed'] = 'Activity viewed';
-$string['event:classroom_session_attended'] = 'Classroom session attended';
+$string['event:page_viewed'] = 'Page viewed';
+$string['event:item_viewed'] = 'Item viewed';
+$string['event:item_completed'] = 'Item completed';
+$string['event:item_result_updated'] = 'Item result updated';
+$string['event:item_completion_forced'] = 'Item completion forced';
+$string['event:item_result_forced'] = 'Item result forced';
+
 

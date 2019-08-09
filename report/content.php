@@ -75,7 +75,7 @@ if ($mform->is_cancelled()) {
 	
 	// Record data
 	foreach($data->force as $userId => $force) {
-		trainingpath_report_force_content_completion($learningpath, $userId, $force, $activity);
+		trainingpath_report_force_content_completion($course, $cm, $learningpath, $userId, $force, $activity);
 	}
 	
 	// Redirect

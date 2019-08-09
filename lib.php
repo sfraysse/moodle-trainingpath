@@ -426,7 +426,7 @@ function trainingpath_pluginfile($course, $cm, $context, $filearea, $args, $forc
 		if ($item) {
 			$filerecord = $DB->get_record('trainingpath_files', array('id' => $itemid), '*', MUST_EXIST);
 			if ($filerecord->launch_file == $filename) {
-				trainingpath_trigger_item_event('activity_viewed', $course, $cm, $learningpath, $item);
+				trainingpath_trigger_item_event('item_viewed', $course, $cm, $learningpath, $item);
 			}
 		}
 	}

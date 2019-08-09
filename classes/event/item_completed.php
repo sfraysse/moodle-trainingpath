@@ -18,13 +18,13 @@ namespace mod_trainingpath\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-class classroom_session_attended extends item_event {
+class item_completed extends item_event {
     
     /**
      * Return localised event name.
      */
     public static function get_name() {
-        return get_string('event:classroom_session_attended', 'trainingpath');
+        return get_string('event:item_completed', 'trainingpath');
     }
 
     /**
@@ -32,7 +32,7 @@ class classroom_session_attended extends item_event {
      */
     public function get_description()  {
         return "The user with id '$this->relateduserid' 
-            attended the classroom session with the id '$this->objectid' 
+            completed the trainingpath item with the id '$this->objectid' 
             in the trainingpath activity with the id '$this->contextinstanceid'.";
     }
 

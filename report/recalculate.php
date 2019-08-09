@@ -89,21 +89,21 @@ if ($confirm) {
 
         // Update sequences
         foreach($sequences as $sequence) {
-            trainingpath_report_rollup_track($learningpath, $sequence, EATPL_ITEM_TYPE_SEQUENCE, $user, false);
+            trainingpath_report_rollup_track($course, $cm, $learningpath, $sequence, EATPL_ITEM_TYPE_SEQUENCE, $user, false);
         }
         
         // Update batches
         foreach($batches as $batch) {
-            trainingpath_report_rollup_track($learningpath, $batch, EATPL_ITEM_TYPE_BATCH, $user, false);
+            trainingpath_report_rollup_track($course, $cm, $learningpath, $batch, EATPL_ITEM_TYPE_BATCH, $user, false);
         }
         
         // Update certificates
         foreach($certificates as $certificate) {
-            trainingpath_report_rollup_track($learningpath, $certificate, EATPL_ITEM_TYPE_CERTIFICATE, $user, false);
+            trainingpath_report_rollup_track($course, $cm, $learningpath, $certificate, EATPL_ITEM_TYPE_CERTIFICATE, $user, false);
         }
         
         // Update path
-		trainingpath_report_rollup_track($learningpath, $topItem->id, EATPL_ITEM_TYPE_PATH, $user);		
+		trainingpath_report_rollup_track($course, $cm, $learningpath, $topItem->id, EATPL_ITEM_TYPE_PATH, $user);		
     }
 
     echo '<br>'.get_string('tracks_recalculate_confirm', 'trainingpath');

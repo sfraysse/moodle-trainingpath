@@ -18,34 +18,22 @@ namespace mod_trainingpath\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-class phases_viewed extends course_module_viewed {
-
+class item_viewed extends item_event {
+    
     /**
      * Return localised event name.
-     *
-     * @return string
      */
     public static function get_name() {
-        return get_string('event:phases_viewed', 'trainingpath');
+        return get_string('event:item_viewed', 'trainingpath');
     }
 
     /**
      * Returns description of what happened.
-     *
-     * @return string
      */
-    public function get_description() {
-        return "The user with id '$this->userid' viewed the phases page of the '{$this->objecttable}' activity with " .
-            "course module id '$this->contextinstanceid'.";
-    }
-
-    /**
-     * Get URL related to the action.
-     *
-     * @return \moodle_url
-     */
-    public function get_url() {
-        return new \moodle_url("/mod/$this->objecttable/view/batches.php", array('cmid' => $this->contextinstanceid));
+    public function get_description()  {
+        return "The user with id '$this->userid' 
+            viewed the trainingpath item with the id '$this->objectid' 
+            in the trainingpath activity with the id '$this->contextinstanceid'.";
     }
 
 }

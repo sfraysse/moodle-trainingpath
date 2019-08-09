@@ -47,7 +47,7 @@ trainingpath_check_view_permission_or_redirect($course, $cm, $batch, $sequence, 
 
 //------------------------------------------- Logs -------------------------------------------//
 
-trainingpath_trigger_item_event('sequence_viewed', $course, $cm, $learningpath, $sequence);
+trainingpath_trigger_item_event('item_viewed', $course, $cm, $learningpath, $sequence);
 
 
 //------------------------------------------- Page setup -------------------------------------------//

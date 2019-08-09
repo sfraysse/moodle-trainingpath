@@ -51,7 +51,7 @@ $scheduleInfo = trainingpath_check_view_permission_or_redirect($course, $cm, $ba
 
 //------------------------------------------- Logs -------------------------------------------//
 
-trainingpath_trigger_item_event('activity_viewed', $course, $cm, $learningpath, $item);
+trainingpath_trigger_item_event('item_viewed', $course, $cm, $learningpath, $item);
 
 
 //------------------------------------------- Page setup -------------------------------------------//
@@ -85,7 +85,7 @@ $html = '';
 $res = scormlite_get_mystatus($cm, $sco, false, false);
 $html .= $res[0];
 $trackdata = $res[1];
-if (!$item->complementary) trainingpath_report_record_scormlite_track($trackdata, $item, $learningpath, false);
+if (!$item->complementary) trainingpath_report_record_scormlite_track($trackdata, $item, $course, $cm, $learningpath, false);
 
 
 //------------------------------------------- Display activity -------------------------------------------//

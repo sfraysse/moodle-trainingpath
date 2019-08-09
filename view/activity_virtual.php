@@ -48,7 +48,7 @@ $scheduleInfo = trainingpath_check_view_permission_or_redirect($course, $cm, $ba
 
 //------------------------------------------- Logs -------------------------------------------//
 
-trainingpath_trigger_item_event('activity_viewed', $course, $cm, $learningpath, $item);
+trainingpath_trigger_item_event('item_viewed', $course, $cm, $learningpath, $item);
 
 
 //------------------------------------------- Page setup -------------------------------------------//

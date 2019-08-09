@@ -18,22 +18,22 @@ namespace mod_trainingpath\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-class activity_viewed extends item_event {
+class item_result_updated extends item_event {
     
     /**
      * Return localised event name.
      */
     public static function get_name() {
-        return get_string('event:activity_viewed', 'trainingpath');
+        return get_string('event:item_result_updated', 'trainingpath');
     }
 
     /**
      * Returns description of what happened.
      */
     public function get_description()  {
-        return "The user with id '$this->userid' 
-            viewed the activity with the id '$this->objectid' 
-            of the trainingpath activity with the id '$this->contextinstanceid'.";
+        return "The result of user with id '$this->relateduserid' 
+            on the trainingpath item with the id '$this->objectid' 
+            changed in the trainingpath activity with the id '$this->contextinstanceid'.";
     }
 
 }

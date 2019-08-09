@@ -18,9 +18,24 @@ namespace mod_trainingpath\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-use mod_scormlite\event\sco_result_updated as native_sco_result_updated;
+class item_completion_forced extends item_event {
+    
+    /**
+     * Return localised event name.
+     */
+    public static function get_name() {
+        return get_string('event:item_completion_forced', 'trainingpath');
+    }
 
-class sco_result_updated extends native_sco_result_updated {
+    /**
+     * Returns description of what happened.
+     */
+    public function get_description()  {
+        return "The user with id '$this->userid' 
+            forced the completion of trainingpath item with the id '$this->objectid'
+            for the learner with the id '$this->relateduserid' 
+            in the trainingpath activity with the id '$this->contextinstanceid'.";
+    }
 
 }
 

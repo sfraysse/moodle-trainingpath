@@ -150,14 +150,19 @@ define('EATPL_PROGRESS_UNIT_STATUS', 2);
  
 // Force content completion
 
-function trainingpath_report_force_content_completion($learningpath, $userId, $force, $item) {
-	global $DB;
+function trainingpath_report_force_content_completion($course, $cm, $learningpath, $userId, $force, $item) {
+	global $DB, $CFG;
 	if (!$force) return;
 	
 	// Get existing track
 	$currentTrack = $DB->get_record('trainingpath_tracks', array('context_id'=>$item->id, 'context_type'=>EATPL_ITEM_TYPE_ACTIVITY, 'user_id'=>$userId));
-	if (!$currentTrack) $currentTrack = new stdClass();
-	
+	if ($currentTrack) {
+		$oldtrack = clone $currentTrack;
+	} else {
+		$oldtrack = null;
+		$currentTrack = new stdClass();
+	}
+
 	// Forced time
 	$forced_time = isset($item->duration_down) && $item->duration_down ? $item->duration_down : $item->duration;
 	
@@ -175,9 +180,21 @@ function trainingpath_report_force_content_completion($learningpath, $userId, $f
 	$currentTrack->time_passing = $item->duration;
 
 	// Save track
-	if (!isset($currentTrack->id)) $currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
-	else $DB->update_record('trainingpath_tracks', $currentTrack);
+	if (isset($currentTrack->id)) {
+		$DB->update_record('trainingpath_tracks', $currentTrack);
+	} else {
+		$currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
+	}
 	
+	// Log
+	if (is_null($oldtrack) 
+		|| $oldtrack->completion != $currentTrack->completion 
+		|| $oldtrack->time_spent != $currentTrack->time_spent
+	) {
+		require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
+		trainingpath_trigger_item_event('item_completion_forced', $course, $cm, $learningpath, $item, $userId, (array)$currentTrack);
+	}
+
 	// Update ScormLite tracks
 	$DB->delete_records('scormlite_scoes_track', array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1));
 	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'x.start.time', 'value'=>time(), 'timemodified'=>time());
@@ -190,13 +207,13 @@ function trainingpath_report_force_content_completion($learningpath, $userId, $f
 	$DB->insert_record("scormlite_scoes_track", $scoTrack);
 	
 	// Rollup
-	trainingpath_report_rollup_track($learningpath, $item->parent_id, EATPL_ITEM_TYPE_SEQUENCE, $userId);
+	trainingpath_report_rollup_track($course, $cm, $learningpath, $item->parent_id, EATPL_ITEM_TYPE_SEQUENCE, $userId);
 }
 
 // Force eval completion
 
-function trainingpath_report_force_eval_score($learningpath, $userId, $score, $item) {
-	global $DB;
+function trainingpath_report_force_eval_score($course, $cm, $learningpath, $userId, $score, $item) {
+	global $DB, $CFG;
 	if ($score == '' || $score != intval($score) || $score < 0 || $score > 100) return;
 	
 	// Get activity and sco
@@ -204,8 +221,13 @@ function trainingpath_report_force_eval_score($learningpath, $userId, $score, $i
 
 	// Get existing track
 	$currentTracks = array_values($DB->get_records('trainingpath_tracks', array('context_id'=>$item->id, 'context_type'=>EATPL_ITEM_TYPE_ACTIVITY, 'user_id'=>$userId)));
-	if (count($currentTracks) == 0) $currentTrack = new stdClass();
-	else $currentTrack = $currentTracks[count($currentTracks)-1];
+	if (count($currentTracks) > 0) {
+		$currentTrack = $currentTracks[count($currentTracks)-1];
+		$oldtrack = clone $currentTrack;
+	} else {
+		$currentTrack = new stdClass();
+		$oldtrack = null;
+	}
 	
 	// Update track
 	$currentTrack->context_id = $item->id;
@@ -241,9 +263,21 @@ function trainingpath_report_force_eval_score($learningpath, $userId, $score, $i
 	}
 
 	// Save track
-	if (!isset($currentTrack->id)) $currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
-	else $DB->update_record('trainingpath_tracks', $currentTrack);
+	if (isset($currentTrack->id)) {
+		$DB->update_record('trainingpath_tracks', $currentTrack);
+	} else {
+		$currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
+	}
 	
+	// Log
+	if (is_null($oldtrack) 
+		|| $oldtrack->score != $currentTrack->score 
+		|| $oldtrack->score_remedial != $currentTrack->score_remedial 
+	) {
+		require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
+		trainingpath_trigger_item_event('item_result_forced', $course, $cm, $learningpath, $item, $userId, (array)$currentTrack);
+	}
+
 	// Update ScormLite tracks
 	$DB->delete_records('scormlite_scoes_track', array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>$currentTrack->attempt));
 	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>$currentTrack->attempt, 'element'=>'x.start.time', 'value'=>time(), 'timemodified'=>time());
@@ -260,7 +294,7 @@ function trainingpath_report_force_eval_score($learningpath, $userId, $score, $i
 	$DB->insert_record("scormlite_scoes_track", $scoTrack);
 	
 	// Rollup
-	trainingpath_report_rollup_track($learningpath, $item->parent_id, EATPL_ITEM_TYPE_SEQUENCE, $userId);
+	trainingpath_report_rollup_track($course, $cm, $learningpath, $item->parent_id, EATPL_ITEM_TYPE_SEQUENCE, $userId);
 }
 
 // Record session track
@@ -310,17 +344,17 @@ function trainingpath_report_record_session_track($course, $cm, $learningpath, $
 		|| $oldtrack->time_spent != $currentTrack->time_spent
 	)) {
 		require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
-		trainingpath_trigger_item_event('classroom_session_attended', $course, $cm, $learningpath, $item, $userId, (array)$currentTrack);
+		trainingpath_trigger_item_event('item_completed', $course, $cm, $learningpath, $item, $userId, (array)$currentTrack);
 	}
 
 	// Rollup
-	trainingpath_report_rollup_track($learningpath, $item->parent_id, EATPL_ITEM_TYPE_SEQUENCE, $userId);
+	trainingpath_report_rollup_track($course, $cm, $learningpath, $item->parent_id, EATPL_ITEM_TYPE_SEQUENCE, $userId);
 }
 
 // Record ScormLite track
 
-function trainingpath_report_record_scormlite_track($trackdata, $item, $learningpath, $eval = false) {
-	global $DB;
+function trainingpath_report_record_scormlite_track($trackdata, $item, $course, $cm, $learningpath, $eval = false) {
+	global $DB, $CFG;
 
 	if ($trackdata->status == 'notattempted') return;
 
@@ -377,6 +411,23 @@ function trainingpath_report_record_scormlite_track($trackdata, $item, $learning
 		$currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
 	}
 	
+	// Log
+	$completed = $currentTrack->completion == EATPL_COMPLETION_COMPLETED && (is_null($oldtrack) || $oldtrack->completion != $currentTrack->completion);
+	$scored = isset($currentTrack->score) && (is_null($oldtrack) || !isset($oldtrack->score) || $oldtrack->score != $currentTrack->score);
+	$scored_remedial = isset($currentTrack->score_remedial) && (is_null($oldtrack) || !isset($oldtrack->score_remedial) || $oldtrack->score_remedial != $currentTrack->score_remedial);
+	if ($scored || $scored_remedial) {
+
+		// Result changed.
+		require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
+		trainingpath_trigger_item_event('item_result_updated', $course, $cm, $learningpath, $item, $trackdata->userid, (array)$currentTrack);
+
+	} else if ($completed) {
+
+		// Completed.
+		require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
+		trainingpath_trigger_item_event('item_completed', $course, $cm, $learningpath, $item, $trackdata->userid, (array)$currentTrack);
+	}
+		
 	// Get and update previous track
 	if ($eval && $trackdata->attemptnb > 1) {
 		$previousTrack = $DB->get_record('trainingpath_tracks', array('context_id'=>$item->id, 'context_type'=>EATPL_ITEM_TYPE_ACTIVITY, 'user_id'=>$trackdata->userid, 'attempt'=>$trackdata->attemptnb-1));
@@ -387,7 +438,7 @@ function trainingpath_report_record_scormlite_track($trackdata, $item, $learning
 	}
 	
 	// Rollup
-	trainingpath_report_rollup_track($learningpath, $item->parent_id);
+	trainingpath_report_rollup_track($course, $cm, $learningpath, $item->parent_id);
 }
 
 function trainingpath_report_must_record_scormlite_track($trackdata, $item) {
@@ -405,8 +456,8 @@ function trainingpath_report_must_record_scormlite_track($trackdata, $item) {
 
 // Rollup
 
-function trainingpath_report_rollup_track($learningpath, $itemId, $itemType = EATPL_ITEM_TYPE_SEQUENCE, $userId = null, $rollup = true) {
-	global $DB, $USER;
+function trainingpath_report_rollup_track($course, $cm, $learningpath, $itemId, $itemType = EATPL_ITEM_TYPE_SEQUENCE, $userId = null, $rollup = true) {
+	global $DB, $USER, $CFG;
 	
 	// Select user
 	if (!isset($userId)) $userId = $USER->id;
@@ -416,7 +467,12 @@ function trainingpath_report_rollup_track($learningpath, $itemId, $itemType = EA
 	
 	// Get track
 	$currentTrack = $DB->get_record('trainingpath_tracks', array('context_id'=>$itemId, 'context_type'=>$itemType, 'user_id'=>$userId));
-	if (!$currentTrack) $currentTrack = new stdClass();
+	if ($currentTrack) {
+		$oldtrack = clone $currentTrack;
+	} else {
+		$oldtrack = null;
+		$currentTrack = new stdClass();
+	}
 
 	// Init track: default values
 	$currentTrack->context_id = $itemId;
@@ -561,16 +617,30 @@ function trainingpath_report_rollup_track($learningpath, $itemId, $itemType = EA
 	}
 
 	// Save track
-	if (!isset($currentTrack->id)) $currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
-	else $DB->update_record('trainingpath_tracks', $currentTrack);
+	if (isset($currentTrack->id)) {
+		$DB->update_record('trainingpath_tracks', $currentTrack);
+	} else {
+		$currentTrack->id = $DB->insert_record("trainingpath_tracks", $currentTrack);
+	}	
 	
+	// Log
+	$completed = $currentTrack->completion == EATPL_COMPLETION_COMPLETED && (is_null($oldtrack) || $oldtrack->completion != $currentTrack->completion);
+	/*
+	$scored = isset($currentTrack->score) && (is_null($oldtrack) || !isset($oldtrack->score) || $oldtrack->score != $currentTrack->score);
+	$scored_remedial = isset($currentTrack->score_remedial) && (is_null($oldtrack) || !isset($oldtrack->score_remedial) || $oldtrack->score_remedial != $currentTrack->score_remedial);
+	*/
+	if ($completed) {
+		require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
+		trainingpath_trigger_item_event('item_completed', $course, $cm, $learningpath, $item, $userId, (array)$currentTrack);
+	}
+		
 	// Rollup
 	if (!$rollup) return;
 	if ($itemType == EATPL_ITEM_TYPE_SEQUENCE) {
-		trainingpath_report_rollup_track($learningpath, $item->parent_id, EATPL_ITEM_TYPE_BATCH, $userId);
-		trainingpath_report_rollup_track($learningpath, $item->grouping_id, EATPL_ITEM_TYPE_CERTIFICATE, $userId);
+		trainingpath_report_rollup_track($course, $cm, $learningpath, $item->parent_id, EATPL_ITEM_TYPE_BATCH, $userId);
+		trainingpath_report_rollup_track($course, $cm, $learningpath, $item->grouping_id, EATPL_ITEM_TYPE_CERTIFICATE, $userId);
 	} else if ($itemType == EATPL_ITEM_TYPE_CERTIFICATE) {
-		trainingpath_report_rollup_track($learningpath, $item->parent_id, EATPL_ITEM_TYPE_PATH, $userId);		
+		trainingpath_report_rollup_track($course, $cm, $learningpath, $item->parent_id, EATPL_ITEM_TYPE_PATH, $userId);		
 	}
 }
 
