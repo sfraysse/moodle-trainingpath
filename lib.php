@@ -111,7 +111,9 @@ function trainingpath_update_instance($data) {
  */
 function trainingpath_delete_instance($id) {
     global $DB, $CFG;
-    if (!$trainingpath = $DB->get_record('trainingpath', array('id'=>$id))) return false;
+	require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
+
+	if (!$trainingpath = $DB->get_record('trainingpath', array('id'=>$id))) return false;
 	
 	// Check permissions
 	$module = $DB->get_record('modules', array('name'=>'trainingpath'));
@@ -123,7 +125,7 @@ function trainingpath_delete_instance($id) {
 	}
 	
 	// Delete top item
-	if (!$topItem = $DB->get_record('trainingpath_item', array('path_id'=>$id, 'type'=>EATPL_ITEM_TYPE_PATH))) return false;
+	if (!$topItem = $DB->get_record('trainingpath_item', array('path_id'=>$id, 'type' => EATPL_ITEM_TYPE_PATH))) return false;
 	require_once($CFG->dirroot.'/mod/trainingpath/edit/ajaxlib.php');
 	trainingpath_db_delete_item($topItem->id);
 		
@@ -318,7 +320,7 @@ function trainingpath_get_file_areas($course, $cm, $context) {
 /**
  * File browsing support for SCORM file areas
  *
- * @param stdclass $browser
+ * @param file_browser $browser
  * @param stdclass $areas
  * @param stdclass $course
  * @param stdclass $cm
