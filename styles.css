@@ -370,12 +370,6 @@ table.trainingpath-table tbody.collapse.in {
 .trainingpath-table {
     margin-bottom: 20px !important;
 }
-.trainingpath-table .form-group,
-.trainingpath-table .form-group label
-{
-    margin: 0;
-    padding: 0;
-}
 .trainingpath-table th.trainingpath-cell-status,
 .trainingpath-table td.trainingpath-cell-status {
     padding: 0 !important;
