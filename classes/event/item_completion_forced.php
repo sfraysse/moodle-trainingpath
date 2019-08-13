@@ -34,7 +34,7 @@ class item_completion_forced extends item_event {
         return "The user with id '$this->userid' 
             forced the completion of trainingpath item with the id '$this->objectid'
             for the learner with the id '$this->relateduserid' 
-            in the trainingpath activity with the id '$this->contextinstanceid'.";
+            in the trainingpath activity with the course module id '$this->contextinstanceid'.";
     }
 
 }

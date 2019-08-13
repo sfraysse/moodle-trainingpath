@@ -33,7 +33,7 @@ class item_result_updated extends item_event {
     public function get_description()  {
         return "The result of user with id '$this->relateduserid' 
             on the trainingpath item with the id '$this->objectid' 
-            changed in the trainingpath activity with the id '$this->contextinstanceid'.";
+            changed in the trainingpath activity with the course module id '$this->contextinstanceid'.";
     }
 
 }

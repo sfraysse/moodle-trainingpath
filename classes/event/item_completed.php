@@ -33,7 +33,7 @@ class item_completed extends item_event {
     public function get_description()  {
         return "The user with id '$this->relateduserid' 
             completed the trainingpath item with the id '$this->objectid' 
-            in the trainingpath activity with the id '$this->contextinstanceid'.";
+            in the trainingpath activity with the course module id '$this->contextinstanceid'.";
     }
 
 }
