@@ -120,40 +120,40 @@ trait statement_utils {
     protected function init_data() {
         global $DB, $CFG;
         require_once($CFG->dirroot.'/mod/trainingpath/locallib.php');
-        $this->cm = $DB->get_record('course_modules', ['id' => $this->event->contextinstanceid]);
-        $this->course = $DB->get_record('course', ['id' => $this->cm->course]);
+        $this->cm = $DB->get_record('course_modules', ['id' => $this->event->contextinstanceid], '*', MUST_EXIST);
+        $this->course = $DB->get_record('course', ['id' => $this->cm->course], '*', MUST_EXIST);
         $this->xapimodule = $this->activities->get('trainingpath', $this->cm->instance, false, 'module', 'trainingpath', 'mod_trainingpath');
 
         if ($this->event->objecttable == 'scormlite_scoes') {
 
             // SCO
-            $this->sco = $DB->get_record('scormlite_scoes', ['id' => $this->event->objectid]);
+            $this->sco = $DB->get_record('scormlite_scoes', ['id' => $this->event->objectid], '*', MUST_EXIST);
             $content = $DB->get_record('trainingpath_item', ['activity_type' => EATPL_ACTIVITY_TYPE_CONTENT, 'ref_id' => $this->sco->id]);
             $eval = $DB->get_record('trainingpath_item', ['activity_type' => EATPL_ACTIVITY_TYPE_EVAL, 'ref_id' => $this->sco->id]);
             $this->activity = $content ? $content : $eval;
-            $this->sequence = $DB->get_record('trainingpath_item', ['id' => $this->activity->parent_id]);
-            $this->phase = $DB->get_record('trainingpath_item', ['id' => $this->sequence->parent_id]);
-            $this->theme = $DB->get_record('trainingpath_item', ['id' => $this->sequence->grouping_id]);
+            $this->sequence = $DB->get_record('trainingpath_item', ['id' => $this->activity->parent_id], '*', MUST_EXIST);
+            $this->phase = $DB->get_record('trainingpath_item', ['id' => $this->sequence->parent_id], '*', MUST_EXIST);
+            $this->theme = $DB->get_record('trainingpath_item', ['id' => $this->sequence->grouping_id], '*', MUST_EXIST);
             return;
 
         } else if ($this->event->objecttable == 'trainingpath_item') {
             
-            $this->item = $DB->get_record('trainingpath_item', ['id' => $this->event->objectid]);
+            $this->item = $DB->get_record('trainingpath_item', ['id' => $this->event->objectid], '*', MUST_EXIST);
 
             if ($this->item->type == EATPL_ITEM_TYPE_ACTIVITY) {
 
                 // Activity
                 $this->activity = $this->item;
-                $this->sequence = $DB->get_record('trainingpath_item', ['id' => $this->activity->parent_id]);
-                $this->phase = $DB->get_record('trainingpath_item', ['id' => $this->sequence->parent_id]);
-                $this->theme = $DB->get_record('trainingpath_item', ['id' => $this->sequence->grouping_id]);
+                $this->sequence = $DB->get_record('trainingpath_item', ['id' => $this->activity->parent_id], '*', MUST_EXIST);
+                $this->phase = $DB->get_record('trainingpath_item', ['id' => $this->sequence->parent_id], '*', MUST_EXIST);
+                $this->theme = $DB->get_record('trainingpath_item', ['id' => $this->sequence->grouping_id], '*', MUST_EXIST);
             
             } else if ($this->item->type == EATPL_ITEM_TYPE_SEQUENCE) {
 
                 // Sequence
                 $this->sequence = $this->item;
-                $this->phase = $DB->get_record('trainingpath_item', ['id' => $this->sequence->parent_id]);
-                $this->theme = $DB->get_record('trainingpath_item', ['id' => $this->sequence->grouping_id]);
+                $this->phase = $DB->get_record('trainingpath_item', ['id' => $this->sequence->parent_id], '*', MUST_EXIST);
+                $this->theme = $DB->get_record('trainingpath_item', ['id' => $this->sequence->grouping_id], '*', MUST_EXIST);
                 
             } else if ($this->item->type == EATPL_ITEM_TYPE_BATCH) {
 
