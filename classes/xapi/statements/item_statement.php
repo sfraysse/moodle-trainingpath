@@ -108,8 +108,17 @@ abstract class item_statement extends base_statement {
 
         }
 
+        // Moodle module profile.
+        foreach ($context['contextActivities']['category'] as &$category) {
+            if ($category['id'] == 'http://vocab.xapi.fr/categories/moodle/scormlite'
+                || $category['id'] == 'http://vocab.xapi.fr/categories/moodle/assessmentpath') {
+                    
+                $category['id'] = 'http://vocab.xapi.fr/categories/moodle/trainingpath';
+                break;
+            }
+        }
+        
         // Change context to "inside module".
-
         if ($this->item->type != EATPL_ITEM_TYPE_PATH) {
 
             // Add course in grouping context.

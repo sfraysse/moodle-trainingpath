@@ -74,6 +74,16 @@ trait attempt_statement {
         // Add activity to grouping.
         $context['contextActivities']['grouping'][] = $this->xapimodule;
 
+        // Moodle module profile.
+        foreach ($context['contextActivities']['category'] as &$category) {
+            if ($category['id'] == 'http://vocab.xapi.fr/categories/moodle/scormlite'
+                || $category['id'] == 'http://vocab.xapi.fr/categories/moodle/assessmentpath') {
+                    
+                $category['id'] = 'http://vocab.xapi.fr/categories/moodle/trainingpath';
+                break;
+            }
+        }
+
         return $context;
     }
 

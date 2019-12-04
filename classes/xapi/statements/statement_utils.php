@@ -177,7 +177,6 @@ trait statement_utils {
 
         // Base.
         $xapi = [
-            'objectType' => 'Activity',
             'id' => $this->xapimodule['id'] . '/theme/' . $this->uuid($this->theme),
             'definition' => [
                 'type' => 'http://vocab.xapi.fr/activities/training-module'
@@ -186,6 +185,7 @@ trait statement_utils {
 
         // Full definition.
         if ($fulldef) {
+            $xapi['objectType'] = 'Activity';
             if (!empty($this->theme->code)) {
                 $xapi['definition']['name'] = logstore_utils::lang_string($this->theme->code, $this->course);
             }
@@ -208,7 +208,6 @@ trait statement_utils {
 
         // Base.
         $xapi = [
-            'objectType' => 'Activity',
             'id' => $this->xapimodule['id'] . '/phase/' . $this->uuid($this->phase),
             'definition' => [
                 'type' => 'http://vocab.xapi.fr/activities/training-phase'
@@ -217,6 +216,7 @@ trait statement_utils {
 
         // Full definition.
         if ($fulldef) {
+            $xapi['objectType'] = 'Activity';
             if (!empty($this->phase->code)) {
                 $xapi['definition']['name'] = logstore_utils::lang_string($this->phase->code, $this->course);
             }
@@ -238,7 +238,6 @@ trait statement_utils {
 
         // Base.
         $xapi = [
-            'objectType' => 'Activity',
             'id' => $this->xapimodule['id'] . '/sequence/' . $this->uuid($this->sequence),
             'definition' => [
                 'type' => 'http://vocab.xapi.fr/activities/training-sequence'
@@ -247,6 +246,7 @@ trait statement_utils {
 
         // Full definition.
         if ($fulldef) {
+            $xapi['objectType'] = 'Activity';
             if (!empty($this->sequence->code)) {
                 $xapi['definition']['name'] = logstore_utils::lang_string($this->sequence->code, $this->course);
             }
@@ -298,7 +298,6 @@ trait statement_utils {
 
         // Base.
         $xapi = [
-            'objectType' => 'Activity',
             'id' => $this->xapimodule['id'] . '/activity/' . $this->uuid($this->activity),
             'definition' => [
                 'type' => $type
@@ -307,6 +306,7 @@ trait statement_utils {
 
         // Full definition.
         if ($fulldef) {
+            $xapi['objectType'] = 'Activity';
             if (!empty($this->activity->code)) {
                 $xapi['definition']['name'] = logstore_utils::lang_string($this->activity->code, $this->course);
                 if (!empty($this->activity->title)) {
