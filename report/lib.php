@@ -71,10 +71,15 @@ function trainingpath_report_get_score_class($score, $colors) {
 		$level++;
 	}
 	switch($level) {
-		case 1 : return 'critical';
-		case 2 : return 'minimal';
-		case 3 : return 'nominal';
-		case 4 : return 'optimal';
+		case 1 : 
+			return 'critical';
+		case 2 : 
+			return 'minimal';
+		case 3 : 
+			return 'nominal';
+		case 4 : 
+		case 5 : 
+			return 'optimal';
 	}
 }
 function trainingpath_report_get_score_color($score, $colors) {
