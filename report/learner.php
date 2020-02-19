@@ -127,7 +127,7 @@ if ($format == 'lms') {
                 (object)array('content'=>$username, 'size'=>13, 'bold'=>1)
             ),
             array('progress', 'time', 'success'),
-            array(30),
+            array(60),
             5,
             $username
         );
