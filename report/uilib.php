@@ -820,6 +820,7 @@ function trainingpath_report_comments_get_form($url, $urlParams, $itemId, $itemT
 	}	
 	
 	// Generate form
+	$url = (new moodle_url($url))->out();
 	$label = get_string('comments', 'trainingpath');
 	$html = '<div class="trainingpath-comments">
 				<form action="'.$url.'" method="POST">
