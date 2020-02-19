@@ -87,7 +87,7 @@ if ($format == 'lms') {
     $exports = array();
     
     //      Simple export
-    $exports[] = (object)array('title'=>get_string('xls_export', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/learners.php', 'params'=>$urlParams);
+    $exports[] = (object)array('title'=>get_string('xls_export_global', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/learners.php', 'params'=>$urlParams);
     
     //      Export certificates
     $certificates = $DB->get_records('trainingpath_item', array('parent_id'=>$topItem->id, 'type'=>EATPL_ITEM_TYPE_CERTIFICATE), 'parent_position');

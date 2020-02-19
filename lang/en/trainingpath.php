@@ -350,6 +350,7 @@ $string['xls_time'] = 'Time';
 $string['xls_success'] = 'Score';
 $string['xls_remedial'] = 'Remedial';
 $string['xls_export'] = 'Export (Excel)';
+$string['xls_export_global'] = 'Global export (Excel)';
 $string['xls_export_certificates'] = 'Export themes (Excel)';
 $string['xls_export_users'] = 'Export users (Excel)';
 $string['xls_export_sequences'] = 'Export sequences (Excel)';
