@@ -607,11 +607,11 @@ function trainingpath_report_rollup_track($course, $cm, $learningpath, $itemId, 
 	// Score and success
 	if ($itemType == EATPL_ITEM_TYPE_CERTIFICATE || $itemType == EATPL_ITEM_TYPE_PATH) {
 		if ($score_count > 0) {
-			$currentTrack->score = intval($score_total / $score_count);
+			$currentTrack->score = round($score_total / $score_count);
 			$currentTrack->score >= get_config('trainingpath')->passing_score ? $currentTrack->success = EATPL_SUCCESS_PASSED : $currentTrack->success = EATPL_SUCCESS_FAILED;
 		}
 		if ($score_remedial_count > 0) {
-			$currentTrack->score_remedial = intval($score_remedial_total / $score_remedial_count);
+			$currentTrack->score_remedial = round($score_remedial_total / $score_remedial_count);
 			$currentTrack->score_remedial >= get_config('trainingpath')->passing_score ? $currentTrack->success_remedial = EATPL_SUCCESS_PASSED : $currentTrack->success_remedial = EATPL_SUCCESS_FAILED;
 		}
 	}
@@ -874,11 +874,11 @@ function trainingpath_report_get_average_status($users, $addToObject = false, $g
 	}
 	$track = new stdClass();
 	if ($score_count > 0) {
-		$track->score = intval($score_total / $score_count);
+		$track->score = round($score_total / $score_count);
 		$track->score >= get_config('trainingpath')->passing_score ? $track->success = EATPL_SUCCESS_PASSED : $track->success = EATPL_SUCCESS_FAILED;
 	}
 	if ($score_remedial_count > 0) {
-		$track->score_remedial = intval($score_remedial_total / $score_remedial_count);
+		$track->score_remedial = round($score_remedial_total / $score_remedial_count);
 		$track->score_remedial >= get_config('trainingpath')->passing_score ? $track->success_remedial = EATPL_SUCCESS_PASSED : $track->success_remedial = EATPL_SUCCESS_FAILED;
 	}
 	if (!$addToObject) return $track;
