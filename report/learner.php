@@ -128,6 +128,7 @@ if ($format == 'lms') {
             ),
             array('progress', 'time', 'success'),
             array(30),
+            5,
             $username
         );
     

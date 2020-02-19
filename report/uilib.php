@@ -571,12 +571,12 @@ function trainingpath_report_excel_get_workbook() {
 	return $workbook;
 }
 
-function trainingpath_report_excel_add_worksheet($workbook, $pageTitles, $indicators = array(), $cols = array(), $sheetTitle = '') {
+function trainingpath_report_excel_add_worksheet($workbook, $pageTitles, $indicators = [], $colsWidth = [], $headerColsNum = 6, $sheetTitle = '') {
 	$worksheet = $workbook->add_worksheet($sheetTitle);
 	
 	// Columns width
-	for($i=0; $i<count($cols); $i++) {
-		$worksheet->set_column($i, $i, $cols[$i]);
+	for($i=0; $i<count($colsWidth); $i++) {
+		$worksheet->set_column($i, $i, $colsWidth[$i]);
 	}
 	
 	// Page titles
@@ -586,7 +586,7 @@ function trainingpath_report_excel_add_worksheet($workbook, $pageTitles, $indica
 		if (isset($pageTitle->italic) && $pageTitle->italic) $style['italic'] = 1;
 		if (isset($pageTitle->bold) && $pageTitle->bold) $style['bold'] = 1;
 		if (isset($pageTitle->size)) $style['size'] = $pageTitle->size;
-		$worksheet->merge_cells($line, 0, $line, 5);
+		$worksheet->merge_cells($line, 0, $line, $headerColsNum - 1);
 		$worksheet->write_string($line, 0, $pageTitle->content, $workbook->add_format($style));
 		$line++;
 	}

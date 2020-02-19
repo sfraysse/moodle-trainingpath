@@ -118,7 +118,13 @@ if ($format == 'lms') {
         // Get certificate
         $certificate = $DB->get_record('trainingpath_item', array('id'=>$certificate_id), '*', MUST_EXIST);
 
-        // Add worksheet
+       // Get data
+       $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, $context_module, $evalOnly, $url);
+    
+        // Determine the number of columns.
+        $columnsNumber = ((count($data->header->cells) - 1) * 3) + 1;
+
+       // Add worksheet
         $sheet = trainingpath_report_excel_add_worksheet($workbook,
             array(
                 (object)array('content'=>get_string('group_results_', 'trainingpath', $group->name), 'size'=>11, 'italic'=>1),
@@ -127,11 +133,9 @@ if ($format == 'lms') {
             ),
             array('progress', 'time', 'success'),
             array(30),
+            $columnsNumber,
             $certificate->code
         );
-    
-       // Get data
-        $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, $context_module, $evalOnly, $url);
     
         // Add table
         trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header);

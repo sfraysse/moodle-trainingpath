@@ -110,6 +110,12 @@ if ($format == 'lms') {
         // Get sequence
         $sequence = $DB->get_record('trainingpath_item', array('id'=>$sequence_id), '*', MUST_EXIST);
 
+        // Get data
+        $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $sequence_id, EATPL_ITEM_TYPE_SEQUENCE, $context_module, $evalOnly, $url);
+    
+        // Determine the number of columns.
+        $columnsNumber = ((count($data->header->cells) - 1) * 3) + 1;
+
         // Add worksheet
         $sheet = trainingpath_report_excel_add_worksheet($workbook,
             array(
@@ -120,11 +126,9 @@ if ($format == 'lms') {
             ),
             array('progress', 'time', 'success'),
             array(30),
+            $columnsNumber,
             $sequence->code
         );
-    
-        // Get data
-        $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $sequence_id, EATPL_ITEM_TYPE_SEQUENCE, $context_module, $evalOnly, $url);
     
         // Add table
         trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header);

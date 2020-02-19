@@ -115,6 +115,12 @@ if ($format == 'lms') {
    
 } else if ($format == 'xls') {
     
+    // Get data
+    $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $topItem->id, EATPL_ITEM_TYPE_PATH, $context_module, false, $url, true);
+    
+    // Determine the number of columns.
+    $columnsNumber = ((count($data->header->cells) - 1) * 3) + 1;
+
     // Add worksheet
     $sheet = trainingpath_report_excel_add_worksheet($workbook,
         array(
@@ -122,12 +128,10 @@ if ($format == 'lms') {
             (object)array('content'=>$learningpath->name, 'size'=>16, 'bold'=>1)
         ),
         array('progress', 'time', 'success'),
-        array(30)
+        array(30),
+        $columnsNumber
     );
 
-    // Get data
-    $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $topItem->id, EATPL_ITEM_TYPE_PATH, $context_module, false, $url, true);
-    
     // Add table
     trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header);
     
