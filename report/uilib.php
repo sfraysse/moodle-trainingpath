@@ -616,7 +616,7 @@ function trainingpath_report_excel_add_table($workbook, &$sheet, $rows, $head = 
 	$sheet->line++;
 	
 	// Sub Header
-	if (isset($head) && count($sheet->indicators) > 1) {
+	if (isset($head) && (count($sheet->indicators) > 1 || $includeRemedial)) {
 		$col = 1;
 		$format = array('bold'=>1, 'color'=>'black', 'bg_color'=>'silver');
 		for ($i = 1; $i < count($head->cells); $i++) {
@@ -648,7 +648,7 @@ function trainingpath_report_excel_add_table($workbook, &$sheet, $rows, $head = 
 	$sheet->line += 2;
 }
 
-function trainingpath_report_excel_write_header_cell($workbook, &$sheet, $col, $cell, $format = array(), $includeRemedial = false) {
+function trainingpath_report_excel_write_header_cell($workbook, &$sheet, $col, $cell, $format = [], $includeRemedial = false) {
 	$format['size'] = 10;
 	$mergeCount = count($sheet->indicators) - 1;
 	if ($includeRemedial) $mergeCount++;
@@ -669,7 +669,7 @@ function trainingpath_report_excel_write_simple_cell($workbook, &$sheet, $col, $
 	$sheet->worksheet->write_string($sheet->line, $col, $content, $workbook->add_format($format));
 }
 
-function trainingpath_report_excel_write_data_cell($workbook, &$sheet, $col, $cell, $format = array(), $includeRemedial = false) {
+function trainingpath_report_excel_write_data_cell($workbook, &$sheet, $col, $cell, $format = [], $includeRemedial = false) {
 	$format['size'] = 10;
 	$format['align'] = 'center';
 	if (isset($cell->class_xls) && $cell->class_xls == 'bold') $format['bold'] = 1;

@@ -83,32 +83,17 @@ if ($format == 'lms') {
     // Print comment
     echo trainingpath_report_comments_get_form('/mod/trainingpath/report/learners.php', $urlParams, $topItem->id, EATPL_ITEM_TYPE_PATH, null, $group_id);
     
-    // Exports
-    $exports = array();
-    
-    //      Simple export
-    $exports[] = (object)array('title'=>get_string('xls_export_global', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/learners.php', 'params'=>$urlParams);
-    
-    //      Export certificates
-    $certificates = $DB->get_records('trainingpath_item', array('parent_id'=>$topItem->id, 'type'=>EATPL_ITEM_TYPE_CERTIFICATE), 'parent_position');
-    $certificateIds = array_keys($certificates);
-    $certificateIds = implode(',', $certificateIds);
-    $certificateParams = array('cmid'=>$cmid, 'group_id'=>$group_id, 'eval_only'=>$evalOnly, 'certificate_id'=>$certificateIds);
-    $exports[] = (object)array('title'=>get_string('xls_export_certificates', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/certificate.php', 'params'=>$certificateParams);
-    
-    //      Export leaners
-    $userIds = array();
-	$users = groups_get_members($group_id, 'u.*', 'lastname ASC, firstname ASC');
-    foreach($users as $user) {
-    	if (has_capability('mod/trainingpath:addinstance', $context_module, $user)) continue;
-        if (has_capability('mod/trainingpath:editschedule', $context_module, $user)) continue;
-        $userIds[] = $user->id;
-    }
-    $userIds = implode(',', $userIds);
-    $learnerParams = array('cmid'=>$cmid, 'eval_only'=>$evalOnly, 'user_id'=>$userIds);
-    $exports[] = (object)array('title'=>get_string('xls_export_users', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/learner.php', 'params'=>$learnerParams);
-    
-    echo trainingpath_get_export_div($exports);
+    // Export buttons: simple reports.
+    echo trainingpath_get_export_div(
+        trainingpath_report_learners_exports($cmid, $group_id, $topItem->id, $context_module, $urlParams, true),
+        get_string('xls_export_simple', 'trainingpath')
+    );
+
+    // Export buttons: full reports.
+    echo trainingpath_get_export_div(
+        trainingpath_report_learners_exports($cmid, $group_id, $topItem->id, $context_module, $urlParams, false),
+        get_string('xls_export_full', 'trainingpath')
+    );
 
     // End
     echo $OUTPUT->footer();
@@ -118,8 +103,10 @@ if ($format == 'lms') {
     // Get data
     $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $topItem->id, EATPL_ITEM_TYPE_PATH, $context_module, false, $url, true);
     
-    // Determine the number of columns.
-    $columnsNumber = ((count($data->header->cells) - 1) * 4) + 1;
+    // Determine columns.
+    $subColumnsNumber = $evalOnly ? 2 : 4;
+    $columnsNumber = ((count($data->header->cells) - 1) * $subColumnsNumber) + 1;
+    $indicators = $evalOnly ? ['success'] : ['progress', 'time', 'success'];
 
     // Add worksheet
     $sheet = trainingpath_report_excel_add_worksheet($workbook,
@@ -127,8 +114,8 @@ if ($format == 'lms') {
             (object)array('content'=>get_string('group_results_', 'trainingpath', $group->name), 'size'=>11, 'italic'=>1),
             (object)array('content'=>$learningpath->name, 'size'=>16, 'bold'=>1)
         ),
-        array('progress', 'time', 'success'),
-        array(30),
+        $indicators,
+        [30],
         $columnsNumber
     );
 
@@ -142,6 +129,40 @@ if ($format == 'lms') {
     // End
     $workbook->close();
 }
+
+function trainingpath_report_learners_exports($cmid, $group_id, $topItemId, $context_module, $urlParams, $evalOnly = true) {
+    global $DB;
+
+    // Exports
+    $exports = array();
+    
+    //      Simple export
+    $urlParams['eval_only'] = $evalOnly;
+    $exports[] = (object)array('title'=>get_string('xls_export_global', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/learners.php', 'params' => $urlParams);
+    
+    //      Export certificates
+    $certificates = $DB->get_records('trainingpath_item', array('parent_id'=>$topItemId, 'type'=>EATPL_ITEM_TYPE_CERTIFICATE), 'parent_position');
+    $certificateIds = array_keys($certificates);
+    $certificateIds = implode(',', $certificateIds);
+    $certificateParams = array('cmid' => $cmid, 'group_id' => $group_id, 'eval_only' => $evalOnly, 'certificate_id' => $certificateIds);
+    $exports[] = (object)array('title'=>get_string('xls_export_certificates', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/certificate.php', 'params' => $certificateParams);
+    
+    //      Export leaners
+    $userIds = array();
+    $users = groups_get_members($group_id, 'u.*', 'lastname ASC, firstname ASC');
+    foreach($users as $user) {
+        if (has_capability('mod/trainingpath:addinstance', $context_module, $user)) continue;
+        if (has_capability('mod/trainingpath:editschedule', $context_module, $user)) continue;
+        $userIds[] = $user->id;
+    }
+    $userIds = implode(',', $userIds);
+    $learnerParams = array('cmid'=>$cmid, 'eval_only'=>$evalOnly, 'user_id'=>$userIds);
+    $exports[] = (object)array('title'=>get_string('xls_export_users', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/learner.php', 'params' => $learnerParams);
+
+    return $exports;
+}
+    
+
 
 
 

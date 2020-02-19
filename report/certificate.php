@@ -126,8 +126,10 @@ if ($format == 'lms') {
         // Get data
         $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, $context_module, $evalOnly, $url);
     
-        // Determine the number of columns.
-        $columnsNumber = ((count($data->header->cells) - 1) * 4) + 1;
+        // Determine columns.
+        $subColumnsNumber = $evalOnly ? 2 : 4;
+        $columnsNumber = ((count($data->header->cells) - 1) * $subColumnsNumber) + 1;
+        $indicators = $evalOnly ? ['success'] : ['progress', 'time', 'success'];
 
         // Add worksheet
         $sheet = trainingpath_report_excel_add_worksheet($workbook,
@@ -136,8 +138,8 @@ if ($format == 'lms') {
                 (object)array('content'=>$learningpath->name, 'size'=>16, 'bold'=>1),
                 (object)array('content'=>'['.$certificate->code.'] '.$certificate->title, 'size'=>13, 'bold'=>1)
             ),
-            array('progress', 'time', 'success'),
-            array(30),
+            $indicators,
+            [30],
             $columnsNumber,
             $certificate->code
         );

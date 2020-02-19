@@ -354,6 +354,8 @@ $string['xls_export_global'] = 'Global export (Excel)';
 $string['xls_export_certificates'] = 'Export themes (Excel)';
 $string['xls_export_users'] = 'Export users (Excel)';
 $string['xls_export_sequences'] = 'Export sequences (Excel)';
+$string['xls_export_simple'] = 'Simple export (evaluation data only)';
+$string['xls_export_full'] = 'Full export (time, progress and evaluation data)';
 
 
 // ------------------------- Calendars ---------------------------

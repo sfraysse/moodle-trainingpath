@@ -134,7 +134,7 @@ function trainingpath_get_activity_open_command($cmid, $item, $via) {
 //------------------------------------------- Layout -------------------------------------------//
 
 
-function trainingpath_get_div($content, $class = '', $style = '') {
+function trainingpath_get_div($content, $class = '', $style = '', $title = '') {
 	$classnames = '';
 	if (is_array($class)) {
 		foreach($class as $cl) {
@@ -143,10 +143,13 @@ function trainingpath_get_div($content, $class = '', $style = '') {
 	} else if (!empty($class)) {
 		$classnames = 'trainingpath-'.$class;
 	}
+	if (!empty($title)) {
+		$content = '<p style="margin-top:-10px;margin-bottom:5px;"><small>'. $title . '</small></p>' . $content;
+	}
 	return '<div class="'.$classnames.'" style="'.$style.'">'.$content.'</div>';
 }
 
-function trainingpath_get_export_div($exports) {
+function trainingpath_get_export_div($exports, $title = '') {
     $commands = array();
 	foreach($exports as $export) {
 		$params = $export->params;
@@ -154,10 +157,10 @@ function trainingpath_get_export_div($exports) {
 		$url = new moodle_url($export->url, $params);
 		$commands[] = (object)array('title'=>$export->title, 'href'=>$url->out(), 'target'=>'_blank', 'class'=>'secondary');
 	}
-	return trainingpath_get_commands_div($commands, 'export');
+	return trainingpath_get_commands_div($commands, 'export', $title);
 }
 
-function trainingpath_get_commands_div($commands, $divClass = '') {
+function trainingpath_get_commands_div($commands, $divClass = '', $title = '') {
 	if (is_array($divClass)) $divClass = implode(' ', $divClass);
 	if (!empty($divClass)) $divClass .= ' ';
 	$divClass .= 'commands';
@@ -176,7 +179,7 @@ function trainingpath_get_commands_div($commands, $divClass = '') {
 				$commandsDiv .= '<a href="'.$command->href.'" target="'.$target.'" class="'.$class.'" role="button">'.$command->title.'</a>';
 			}
 		}
-		$commandsDiv = trainingpath_get_div($commandsDiv, $divClass);
+		$commandsDiv = trainingpath_get_div($commandsDiv, $divClass, '', $title);
 	}
 	return $commandsDiv;
 }
