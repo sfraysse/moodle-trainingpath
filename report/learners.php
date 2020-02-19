@@ -119,7 +119,7 @@ if ($format == 'lms') {
     $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $topItem->id, EATPL_ITEM_TYPE_PATH, $context_module, false, $url, true);
     
     // Determine the number of columns.
-    $columnsNumber = ((count($data->header->cells) - 1) * 3) + 1;
+    $columnsNumber = ((count($data->header->cells) - 1) * 4) + 1;
 
     // Add worksheet
     $sheet = trainingpath_report_excel_add_worksheet($workbook,
@@ -133,7 +133,7 @@ if ($format == 'lms') {
     );
 
     // Add table
-    trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header);
+    trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header, true);
     
     // Add comment
     $commentRecord = trainingpath_report_comments_get_record($topItem->id, EATPL_ITEM_TYPE_PATH, null, $group_id);

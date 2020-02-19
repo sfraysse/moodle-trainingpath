@@ -650,11 +650,13 @@ function trainingpath_report_excel_add_table($workbook, &$sheet, $rows, $head = 
 
 function trainingpath_report_excel_write_header_cell($workbook, &$sheet, $col, $cell, $format = array(), $includeRemedial = false) {
 	$format['size'] = 10;
-	$mergeCount = count($sheet->indicators)-1;
+	$mergeCount = count($sheet->indicators) - 1;
 	if ($includeRemedial) $mergeCount++;
 	isset($cell->content_pure) ? $content = $cell->content_pure : $content = '';
 	if ($col > 0) {
-		$col = ($col-1) * count($sheet->indicators) + 1;
+		$cellCount = count($sheet->indicators);
+		if ($includeRemedial) $cellCount++;
+		$col = ($col-1) * $cellCount + 1;
 		$sheet->worksheet->merge_cells($sheet->line, $col, $sheet->line, $col+$mergeCount);
 	}
 	$sheet->worksheet->write_string($sheet->line, $col, $content, $workbook->add_format($format));
@@ -671,7 +673,9 @@ function trainingpath_report_excel_write_data_cell($workbook, &$sheet, $col, $ce
 	$format['size'] = 10;
 	$format['align'] = 'center';
 	if (isset($cell->class_xls) && $cell->class_xls == 'bold') $format['bold'] = 1;
-	if ($col > 0) $col = ($col-1) * count($sheet->indicators) + 1;
+	$cellCount = count($sheet->indicators);
+	if ($includeRemedial) $cellCount++;
+	if ($col > 0) $col = ($col-1) * $cellCount + 1;
 	foreach($sheet->indicators as $indicator) {
 		if (isset($cell->data) && $cell->data && isset($cell->data->$indicator) && $cell->data->$indicator) {
 			if ($indicator == 'progress') {
