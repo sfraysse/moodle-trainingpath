@@ -100,7 +100,12 @@ if ($format == 'lms') {
     $exports[] = (object)array('title'=>get_string('xls_export', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/certificate.php', 'params'=>$urlParams);
     
     //      Export sequences
-    $sequences = $DB->get_records('trainingpath_item', array('grouping_id'=>$certificate_id, 'type'=>EATPL_ITEM_TYPE_SEQUENCE), 'parent_position');
+    if ($evalOnly) {
+		$sequences = $DB->get_records('trainingpath_item', array('grouping_id'=>$certificate_id, 'type'=>EATPL_ITEM_TYPE_SEQUENCE, 'evaluation'=>1, 'complementary'=>0), 'parent_position');
+	} else {
+		$sequences = $DB->get_records('trainingpath_item', array('grouping_id'=>$certificate_id, 'type'=>EATPL_ITEM_TYPE_SEQUENCE, 'complementary'=>0), 'parent_position');
+	}
+
     $sequenceIds = array_keys($sequences);
     $sequenceIds = implode(',', $sequenceIds);
     $sequenceParams = array('cmid'=>$cmid, 'group_id'=>$group_id, 'eval_only'=>$evalOnly, 'sequence_id'=>$sequenceIds);
@@ -118,13 +123,13 @@ if ($format == 'lms') {
         // Get certificate
         $certificate = $DB->get_record('trainingpath_item', array('id'=>$certificate_id), '*', MUST_EXIST);
 
-       // Get data
-       $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, $context_module, $evalOnly, $url);
+        // Get data
+        $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, $context_module, $evalOnly, $url);
     
         // Determine the number of columns.
         $columnsNumber = ((count($data->header->cells) - 1) * 3) + 1;
 
-       // Add worksheet
+        // Add worksheet
         $sheet = trainingpath_report_excel_add_worksheet($workbook,
             array(
                 (object)array('content'=>get_string('group_results_', 'trainingpath', $group->name), 'size'=>11, 'italic'=>1),
