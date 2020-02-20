@@ -38,8 +38,10 @@ $string['trainingpath:editschedule'] = 'Editer un planning de formation';
 
 // ------------------------- Settings ---------------------------
 
-$string['prefered_activity_access_eval'] = 'Accès aux activités (évaluations)';
-$string['prefered_activity_access_eval_desc'] = "Valeur par défaut de l'accès aux évaluations dans les réglages du planning.";
+$string['prefered_activity_access_eval'] = 'Accès aux activités (évaluations initiales)';
+$string['prefered_activity_access_eval_desc'] = "Valeur par défaut de l'accès aux évaluations initiales dans les réglages du planning.";
+$string['prefered_activity_access_remedial'] = 'Accès aux activités (évaluations de remédiation)';
+$string['prefered_activity_access_remedial_desc'] = "Valeur par défaut de l'accès aux évaluations de remédiation dans les réglages du planning.";
 $string['prefered_activity_access'] = 'Accès aux activités (autres)';
 $string['prefered_activity_access_desc'] = "Valeur par défaut de l'accès aux activités autres que test dans les réglages du planning.";
 

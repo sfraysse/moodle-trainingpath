@@ -38,8 +38,10 @@ $string['trainingpath:editschedule'] = 'Edit a training schedule';
 
 // ------------------------- Settings ---------------------------
 
-$string['prefered_activity_access_eval'] = 'Prefered activity access (assessment)';
-$string['prefered_activity_access_eval_desc'] = 'Default value of the access setting on assessments scheduling.';
+$string['prefered_activity_access_eval'] = 'Prefered activity access (initial assessment)';
+$string['prefered_activity_access_eval_desc'] = 'Default value of the access setting on initial assessments scheduling.';
+$string['prefered_activity_access_remedial'] = 'Prefered activity access (remedial assessment)';
+$string['prefered_activity_access_remedial_desc'] = 'Default value of the access setting on remedial assessments scheduling.';
 $string['prefered_activity_access'] = 'Prefered activity access (other)';
 $string['prefered_activity_access_desc'] = 'Default value of the access setting on activities scheduling other than test.';
 
