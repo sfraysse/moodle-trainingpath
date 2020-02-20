@@ -53,7 +53,7 @@ class mform_eval extends moodleform {
 			}
 			$mform->addElement('html', '
 					</td>
-					<td class="trainingpath-text-right trainingpath-text-middle">');
+					<td class="trainingpath-text-right trainingpath-text-middle trainingpath-text-field">');
 			$mform->addElement('text', 'force['.$user->id.']', '', 'maxlength="3" size="3"');
 			$mform->setType('force['.$user->id.']', PARAM_RAW);
 			$mform->addElement('html', '

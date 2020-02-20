@@ -377,7 +377,18 @@ table.trainingpath-table tbody.collapse.in {
     height: 40px !important;
     vertical-align: middle;
 }
+.trainingpath-table .trainingpath-text-field .form-group {
+    margin-bottom: 0 !important;
+}
+.trainingpath-table .trainingpath-text-field .form-group .col-md-3 {
+    padding-top: 5px !important;
+}
 
+@media (min-width: 768px) {
+    .trainingpath-table .trainingpath-text-field .form-group .col-md-3 {
+        text-align: right !important;
+    }    
+}
 
 /*------------------------ Schedule ----------------------*/
 

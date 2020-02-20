@@ -153,9 +153,16 @@ define('EATPL_PROGRESS_UNIT_STATUS', 2);
  *                                             Tracking                                        
  *************************************************************************************************/
  
+// Get forced time
+
+function trainingpath_report_get_forcable_time($item, $track = null) {
+	if (isset($track) && isset($track->time_spent) && $track->time_spent) return $track->time_spent;
+	return isset($item->duration_down) && $item->duration_down ? $item->duration_down : $item->duration;
+}
+
 // Force content completion
 
-function trainingpath_report_force_content_completion($course, $cm, $learningpath, $userId, $force, $item) {
+function trainingpath_report_force_content_completion($course, $cm, $learningpath, $userId, $force, $item, $time) {
 	global $DB, $CFG;
 	if (!$force) return;
 	
@@ -168,16 +175,13 @@ function trainingpath_report_force_content_completion($course, $cm, $learningpat
 		$currentTrack = new stdClass();
 	}
 
-	// Forced time
-	$forced_time = isset($item->duration_down) && $item->duration_down ? $item->duration_down : $item->duration;
-	
 	// Update track
 	$currentTrack->context_id = $item->id;
 	$currentTrack->context_type = EATPL_ITEM_TYPE_ACTIVITY;
 	$currentTrack->user_id = $userId;
 	$currentTrack->attempt = 1;
 	$currentTrack->completion = EATPL_COMPLETION_COMPLETED;
-	if (!isset($currentTrack->time_spent)) $currentTrack->time_spent = $forced_time;
+	$currentTrack->time_spent = $time;
 	$currentTrack->time_status = EATPL_TIME_STATUS_OPTIMAL;
 	$currentTrack->last_attempt = true;
 	$currentTrack->progress_unit = EATPL_PROGRESS_UNIT_STATUS;
@@ -204,7 +208,7 @@ function trainingpath_report_force_content_completion($course, $cm, $learningpat
 	$DB->delete_records('scormlite_scoes_track', array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1));
 	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'x.start.time', 'value'=>time(), 'timemodified'=>time());
 	$DB->insert_record("scormlite_scoes_track", $scoTrack);
-	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'cmi.total_time', 'value'=>trainingpath_report_get_time_scorm2004($forced_time), 'timemodified'=>time());
+	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'cmi.total_time', 'value'=>trainingpath_report_get_time_scorm2004($time), 'timemodified'=>time());
 	$DB->insert_record("scormlite_scoes_track", $scoTrack);
 	$scoTrack = (object)array('userid'=>$userId, 'scoid'=>$item->ref_id, 'attempt'=>1, 'element'=>'cmi.completion_status', 'value'=>'completed', 'timemodified'=>time());
 	$DB->insert_record("scormlite_scoes_track", $scoTrack);
@@ -730,7 +734,7 @@ function trainingpath_report_get_user_and_track($user, $context_module, $itemId,
 	// Track
 	$currentTracks = array_values($DB->get_records('trainingpath_tracks', array('context_id'=>$itemId, 'context_type'=>$itemType, 'user_id'=>$user->id)));
 	if (count($currentTracks) > 0) $user->track = $currentTracks[count($currentTracks) - 1];
-	
+
 	// Needed to use $OUTPUT->user_picture($user)
 	$user->firstnamephonetic = '';
 	$user->lastnamephonetic = '';

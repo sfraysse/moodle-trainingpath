@@ -53,8 +53,22 @@ class mform_content extends moodleform {
 			}
 			$mform->addElement('html', '
 					</td>
+		
 					<td class="trainingpath-text-right trainingpath-text-middle">');
 			$mform->addElement('advcheckbox', 'force['.$user->id.']', '', '', array('group' => 1), array(0, 1));
+			$mform->addElement('html', '
+					</td>
+
+					<td class="trainingpath-text-middle trainingpath-text-field">');
+					/*
+			$mform->addElement('html', '
+				<input type="text" class="form-control" style="display:inline-block;width:auto" 
+					name="time['.$user->id.']" id="id_time_'.$user->id.'"
+					value="'.intval($user->forcableTime / 60).'" size="3" maxlength="3"> min
+			');
+			*/
+			$mform->addElement('text', 'time['.$user->id.']', 'Time (min):', 'maxlength="3" size="3" value="'.intval($user->forcableTime / 60).'"');
+			$mform->setType('time['.$user->id.']', PARAM_RAW);
 			$mform->addElement('html', '
 					</td>
 				</tr>');
