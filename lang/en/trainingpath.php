@@ -331,6 +331,7 @@ $string['managing_tracking'] = 'Managing tracking';
 $string['user'] = 'User';
 $string['status'] = 'Status';
 $string['force_completion'] = 'Force completion';
+$string['force_time'] = 'Time (mn):';
 $string['force_scores'] = 'Force scores';
 $string['reporting'] = 'Reporting';
 $string['learners'] = 'Learners';

@@ -60,14 +60,7 @@ class mform_content extends moodleform {
 					</td>
 
 					<td class="trainingpath-text-middle trainingpath-text-field">');
-					/*
-			$mform->addElement('html', '
-				<input type="text" class="form-control" style="display:inline-block;width:auto" 
-					name="time['.$user->id.']" id="id_time_'.$user->id.'"
-					value="'.intval($user->forcableTime / 60).'" size="3" maxlength="3"> min
-			');
-			*/
-			$mform->addElement('text', 'time['.$user->id.']', 'Time (min):', 'maxlength="3" size="3" value="'.intval($user->forcableTime / 60).'"');
+			$mform->addElement('text', 'time['.$user->id.']', get_string('force_time', 'trainingpath'), 'maxlength="3" size="3" value="'.intval($user->forcableTime / 60).'"');
 			$mform->setType('time['.$user->id.']', PARAM_RAW);
 			$mform->addElement('html', '
 					</td>

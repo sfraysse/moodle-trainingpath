@@ -330,6 +330,7 @@ $string['managing_tracking'] = 'Gestion du suivi';
 $string['user'] = 'Utilisateur';
 $string['status'] = 'Statut';
 $string['force_completion'] = 'Forcer la complétion';
+$string['force_time'] = 'Temps (mn) :';
 $string['force_scores'] = 'Forcer les scores';
 $string['reporting'] = 'Suivi';
 $string['learners'] = 'Apprenants';
