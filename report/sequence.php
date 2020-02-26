@@ -133,7 +133,7 @@ if ($format == 'lms') {
         );
     
         // Add table
-        trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header);
+        trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header, false, false, false, $evalOnly);
         
         // Add comment
         $commentRecord = trainingpath_report_comments_get_record($sequence_id, EATPL_ITEM_TYPE_SEQUENCE, null, $group_id);

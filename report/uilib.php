@@ -330,7 +330,9 @@ function trainingpath_report_get_children_items_rows($userId, $groupId, $type, $
 							}
 							if ($allowed) {
 								$evalTrack = trainingpath_report_get_user_track($userId, $eval->id, $eval->type);
-								$reviewInitialUrl = new moodle_url('/mod/scormlite/player.php', array('scoid'=>$eval->ref_id, 'userid'=>$userId, 'attempt'=>$evalTrack->last_attempt, 'backurl'=>$backurl->full));
+								if ($evalTrack) {
+									$reviewInitialUrl = new moodle_url('/mod/scormlite/player.php', array('scoid'=>$eval->ref_id, 'userid'=>$userId, 'attempt'=>$evalTrack->last_attempt, 'backurl'=>$backurl->full));
+								}
 							}
 						}
 					}
@@ -345,7 +347,9 @@ function trainingpath_report_get_children_items_rows($userId, $groupId, $type, $
 							}
 							if ($allowed) {
 								$evalTrack = trainingpath_report_get_user_track($userId, $eval->id, $eval->type);
-								$reviewRemedialUrl = new moodle_url('/mod/scormlite/player.php', array('scoid'=>$eval->ref_id, 'userid'=>$userId, 'attempt'=>$evalTrack->last_attempt, 'backurl'=>$backurl->full));
+								if ($evalTrack) {
+									$reviewRemedialUrl = new moodle_url('/mod/scormlite/player.php', array('scoid'=>$eval->ref_id, 'userid'=>$userId, 'attempt'=>$evalTrack->last_attempt, 'backurl'=>$backurl->full));
+								}
 							}
 						}
 					}
@@ -601,15 +605,21 @@ function trainingpath_report_excel_add_comment($workbook, &$sheet, $title, $comm
 	$sheet->line += 2;
 }
 
-function trainingpath_report_excel_add_table($workbook, &$sheet, $rows, $head = null, $includeRemedial = false, $hideHead = false) {
+function trainingpath_report_excel_add_table($workbook, &$sheet, $rows, $head = null, $includeRemedial = false, $hideHead = false, $topLevel = false, $hideFirst = false) {
 	
 	// Header
 	if (isset($head) && !$hideHead) {
 		$col = 0;
+		$excelCol = 0;
 		$format = array('bold'=>1, 'color'=>'white');
 		foreach($head->cells as $cell) {
+			if ($col == 1 && $hideFirst) {
+				$col++;
+				continue;
+			}
 			if ($col > 0) $format['bg_color'] = 'grey';
-			trainingpath_report_excel_write_header_cell($workbook, $sheet, $col, $cell, $format, $includeRemedial);
+			trainingpath_report_excel_write_header_cell($workbook, $sheet, $excelCol, $cell, $format, $includeRemedial);
+			$excelCol++;
 			$col++;
 		}
 	}
@@ -618,30 +628,56 @@ function trainingpath_report_excel_add_table($workbook, &$sheet, $rows, $head = 
 	// Sub Header
 	if (isset($head) && (count($sheet->indicators) > 1 || $includeRemedial)) {
 		$col = 1;
+		$excelCol = 1;
 		$format = array('bold'=>1, 'color'=>'black', 'bg_color'=>'silver');
 		for ($i = 1; $i < count($head->cells); $i++) {
+			if ($col == 1 && $hideFirst) {
+				$col++;
+				continue;
+			}
+			$lastColumnSet = ($i == count($head->cells) - 1);
 			foreach($sheet->indicators as $indicator) {
-				$subcell = (object)array('content_pure'=>get_string('xls_'.$indicator, 'trainingpath'));
-				trainingpath_report_excel_write_simple_cell($workbook, $sheet, $col, $subcell, $format, $includeRemedial);
+				if ($indicator == 'success' && $includeRemedial) {
+					if ($topLevel || $lastColumnSet) {
+						$subcell = (object)array('content_pure' => get_string('xls_first', 'trainingpath'));
+					} else {
+						$subcell = (object)array('content_pure' => get_string('xls_initial', 'trainingpath'));
+					}
+				} else {
+					$subcell = (object)array('content_pure' => get_string('xls_'.$indicator, 'trainingpath'));
+				}
+				trainingpath_report_excel_write_simple_cell($workbook, $sheet, $excelCol, $subcell, $format, $includeRemedial);
+				$excelCol++;
 				$col++;
 			}
 			if ($includeRemedial) {
-				$subcell = (object)array('content_pure'=>get_string('xls_remedial', 'trainingpath'));
-				trainingpath_report_excel_write_simple_cell($workbook, $sheet, $col, $subcell, $format, $includeRemedial);
+				if ($topLevel || $lastColumnSet) {
+					$subcell = (object)array('content_pure'=>get_string('xls_last', 'trainingpath'));
+				} else {
+					$subcell = (object)array('content_pure'=>get_string('xls_remedial', 'trainingpath'));
+				}
+				trainingpath_report_excel_write_simple_cell($workbook, $sheet, $excelCol, $subcell, $format, $includeRemedial);
+				$excelCol++;
 				$col++;
 			}
 		}
+		$sheet->line++;
 	}
-	$sheet->line++;
 	
 	// Rows
 	foreach($rows as $row) {
 		$col = 0;
+		$excelCol = 0;
 		$format = array('border'=>1);
 		foreach($row->cells as $cell) {
-			if ($col == 0) trainingpath_report_excel_write_simple_cell($workbook, $sheet, $col, $cell, $format, $includeRemedial);
-			else trainingpath_report_excel_write_data_cell($workbook, $sheet, $col, $cell, $format, $includeRemedial);
+			if ($col == 1 && $hideFirst) {
+				$col++;
+				continue;
+			}
+			if ($col == 0) trainingpath_report_excel_write_simple_cell($workbook, $sheet, $excelCol, $cell, $format, $includeRemedial);
+			else trainingpath_report_excel_write_data_cell($workbook, $sheet, $excelCol, $cell, $format, $includeRemedial);
 			$col++;
+			$excelCol++;
 		}
 		$sheet->line++;
 	}
