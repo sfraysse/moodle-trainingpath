@@ -116,6 +116,7 @@ if ($format == 'lms') {
         // Determine columns.
         $subColumnsNumber = $evalOnly ? 1 : 3;
         $columnsNumber = ((count($data->header->cells) - 1) * $subColumnsNumber) + 1;
+        if ($evalOnly) $columnsNumber--;
         $indicators = $evalOnly ? ['success'] : ['progress', 'time', 'success'];
 
         // Add worksheet
