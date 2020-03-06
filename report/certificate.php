@@ -125,6 +125,9 @@ if ($format == 'lms') {
 
         // Get data
         $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, $context_module, $evalOnly, $url);
+        if (!$data) {
+            continue;
+        }
     
         // Determine columns.
         $subColumnsNumber = $evalOnly ? 2 : 4;

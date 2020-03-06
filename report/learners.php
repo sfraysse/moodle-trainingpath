@@ -102,7 +102,7 @@ if ($format == 'lms') {
     
     // Get data
     $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $topItem->id, EATPL_ITEM_TYPE_PATH, $context_module, false, $url, true);
-    
+
     // Determine columns.
     $subColumnsNumber = $evalOnly ? 2 : 4;
     $columnsNumber = ((count($data->header->cells) - 1) * $subColumnsNumber) + 1;

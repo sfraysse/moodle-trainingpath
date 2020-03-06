@@ -112,6 +112,9 @@ if ($format == 'lms') {
 
         // Get data
         $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $sequence_id, EATPL_ITEM_TYPE_SEQUENCE, $context_module, $evalOnly, $url);
+        if (!$data) {
+            continue;
+        }
     
         // Determine columns.
         $subColumnsNumber = $evalOnly ? 1 : 3;
