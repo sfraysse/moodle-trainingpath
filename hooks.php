@@ -29,5 +29,6 @@ function trainingpath_hook_completion($cm, $learningpath, $sco, $userid, $attemp
 	global $DB;
 	$trackdata = scormlite_get_mystatus($cm, $sco, false, false)[1];
 	$item = $DB->get_record('trainingpath_item', array('ref_id' => $sco->id), '*', MUST_EXIST);
-	if (!$item->complementary) trainingpath_report_record_scormlite_track($trackdata, $item, $learningpath, $item->evaluation);
+	$course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+	if (!$item->complementary) trainingpath_report_record_scormlite_track($trackdata, $item, $course, $cm, $learningpath, $item->evaluation);
 }

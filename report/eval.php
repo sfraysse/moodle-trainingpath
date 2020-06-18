@@ -75,7 +75,7 @@ if ($mform->is_cancelled()) {
 	
 	// Record data
 	foreach($data->force as $userId => $score) {
-		trainingpath_report_force_eval_score($learningpath, $userId, $score, $activity);
+		trainingpath_report_force_eval_score($course, $cm, $learningpath, $userId, $score, $activity);
 	}
 	
 	// Redirect

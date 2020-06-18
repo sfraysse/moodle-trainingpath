@@ -110,6 +110,18 @@ if ($format == 'lms') {
         // Get sequence
         $sequence = $DB->get_record('trainingpath_item', array('id'=>$sequence_id), '*', MUST_EXIST);
 
+        // Get data
+        $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $sequence_id, EATPL_ITEM_TYPE_SEQUENCE, $context_module, $evalOnly, $url);
+        if (!$data) {
+            continue;
+        }
+    
+        // Determine columns.
+        $subColumnsNumber = $evalOnly ? 1 : 3;
+        $columnsNumber = ((count($data->header->cells) - 1) * $subColumnsNumber) + 1;
+        if ($evalOnly) $columnsNumber--;
+        $indicators = $evalOnly ? ['success'] : ['progress', 'time', 'success'];
+
         // Add worksheet
         $sheet = trainingpath_report_excel_add_worksheet($workbook,
             array(
@@ -118,16 +130,14 @@ if ($format == 'lms') {
                 (object)array('content'=>'['.$certificate->code.'] '.$certificate->title, 'size'=>13, 'bold'=>1),
                 (object)array('content'=>'['.$sequence->code.'] '.$sequence->title, 'size'=>11, 'bold'=>1)
             ),
-            array('progress', 'time', 'success'),
-            array(30),
+            $indicators,
+            [30],
+            $columnsNumber,
             $sequence->code
         );
     
-        // Get data
-        $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $sequence_id, EATPL_ITEM_TYPE_SEQUENCE, $context_module, $evalOnly, $url);
-    
         // Add table
-        trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header);
+        trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header, false, false, false, $evalOnly);
         
         // Add comment
         $commentRecord = trainingpath_report_comments_get_record($sequence_id, EATPL_ITEM_TYPE_SEQUENCE, null, $group_id);

@@ -119,6 +119,10 @@ if ($format == 'lms') {
         $user = $DB->get_record('user', array('id'=>$userId));
         $username = $user->firstname.' '.$user->lastname;
 
+        // Determine columns.
+        $columnsNumber = $evalOnly ? 3 : 5;
+        $indicators = $evalOnly ? ['success'] : ['progress', 'time', 'success'];
+
         // Add worksheet
         $sheet = trainingpath_report_excel_add_worksheet($workbook,
             array(
@@ -126,8 +130,9 @@ if ($format == 'lms') {
                 (object)array('content'=>$learningpath->name, 'size'=>16, 'bold'=>1),
                 (object)array('content'=>$username, 'size'=>13, 'bold'=>1)
             ),
-            array('progress', 'time', 'success'),
-            array(30),
+            $indicators,
+            [60],
+            $columnsNumber,
             $username
         );
     

@@ -38,8 +38,10 @@ $string['trainingpath:editschedule'] = 'Editer un planning de formation';
 
 // ------------------------- Settings ---------------------------
 
-$string['prefered_activity_access_eval'] = 'Accès aux activités (évaluations)';
-$string['prefered_activity_access_eval_desc'] = "Valeur par défaut de l'accès aux évaluations dans les réglages du planning.";
+$string['prefered_activity_access_eval'] = 'Accès aux activités (évaluations initiales)';
+$string['prefered_activity_access_eval_desc'] = "Valeur par défaut de l'accès aux évaluations initiales dans les réglages du planning.";
+$string['prefered_activity_access_remedial'] = 'Accès aux activités (évaluations de remédiation)';
+$string['prefered_activity_access_remedial_desc'] = "Valeur par défaut de l'accès aux évaluations de remédiation dans les réglages du planning.";
 $string['prefered_activity_access'] = 'Accès aux activités (autres)';
 $string['prefered_activity_access_desc'] = "Valeur par défaut de l'accès aux activités autres que test dans les réglages du planning.";
 
@@ -328,10 +330,12 @@ $string['managing_tracking'] = 'Gestion du suivi';
 $string['user'] = 'Utilisateur';
 $string['status'] = 'Statut';
 $string['force_completion'] = 'Forcer la complétion';
+$string['force_time'] = 'Temps (mn) :';
 $string['force_scores'] = 'Forcer les scores';
 $string['reporting'] = 'Suivi';
 $string['learners'] = 'Apprenants';
 $string['global'] = 'Global';
+$string['avg'] = 'Moy';
 $string['average'] = 'Moyenne';
 $string['average_remedial'] = 'Moyenne (apprenants en remédiation)';
 $string['group_progress'] = 'Progression du groupe';
@@ -347,11 +351,17 @@ $string['group_results_'] = 'Résultats du groupe : {$a}';
 $string['xls_progress'] = 'Progression';
 $string['xls_time'] = 'Temps';
 $string['xls_success'] = 'Score';
-$string['xls_remedial'] = 'Remédiation';
+$string['xls_first'] = 'Init Avg';
+$string['xls_last'] = 'Final Avg';
+$string['xls_initial'] = 'Initial';
+$string['xls_remedial'] = 'Remédial';
 $string['xls_export'] = 'Exporter (Excel)';
+$string['xls_export_global'] = 'Export global (Excel)';
 $string['xls_export_certificates'] = 'Exporter les thèmes (Excel)';
 $string['xls_export_users'] = 'Exporter les utilisateurs (Excel)';
 $string['xls_export_sequences'] = 'Exporter les séquences (Excel)';
+$string['xls_export_simple'] = "Export simple (données d'évaluation uniquement)";
+$string['xls_export_full'] = "Export complet (temps, progression et données d'évaluation)";
 
 
 // ------------------------- Calendars ---------------------------

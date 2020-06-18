@@ -45,6 +45,11 @@ require_login($course, false, $cm);
 trainingpath_check_view_permission_or_redirect($course, $cm, $batch, $sequence, $via);
 
 
+//------------------------------------------- Logs -------------------------------------------//
+
+trainingpath_trigger_item_event('item_viewed', $course, $cm, $learningpath, $sequence);
+
+
 //------------------------------------------- Page setup -------------------------------------------//
 
 $breadcrumb = array();

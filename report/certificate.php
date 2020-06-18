@@ -100,7 +100,12 @@ if ($format == 'lms') {
     $exports[] = (object)array('title'=>get_string('xls_export', 'trainingpath'), 'format'=>'xls', 'url'=>'/mod/trainingpath/report/certificate.php', 'params'=>$urlParams);
     
     //      Export sequences
-    $sequences = $DB->get_records('trainingpath_item', array('grouping_id'=>$certificate_id, 'type'=>EATPL_ITEM_TYPE_SEQUENCE), 'parent_position');
+    if ($evalOnly) {
+		$sequences = $DB->get_records('trainingpath_item', array('grouping_id'=>$certificate_id, 'type'=>EATPL_ITEM_TYPE_SEQUENCE, 'evaluation'=>1, 'complementary'=>0), 'parent_position');
+	} else {
+		$sequences = $DB->get_records('trainingpath_item', array('grouping_id'=>$certificate_id, 'type'=>EATPL_ITEM_TYPE_SEQUENCE, 'complementary'=>0), 'parent_position');
+	}
+
     $sequenceIds = array_keys($sequences);
     $sequenceIds = implode(',', $sequenceIds);
     $sequenceParams = array('cmid'=>$cmid, 'group_id'=>$group_id, 'eval_only'=>$evalOnly, 'sequence_id'=>$sequenceIds);
@@ -118,6 +123,17 @@ if ($format == 'lms') {
         // Get certificate
         $certificate = $DB->get_record('trainingpath_item', array('id'=>$certificate_id), '*', MUST_EXIST);
 
+        // Get data
+        $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, $context_module, $evalOnly, $url);
+        if (!$data) {
+            continue;
+        }
+    
+        // Determine columns.
+        $subColumnsNumber = $evalOnly ? 2 : 4;
+        $columnsNumber = ((count($data->header->cells) - 1) * $subColumnsNumber) + 1;
+        $indicators = $evalOnly ? ['success'] : ['progress', 'time', 'success'];
+
         // Add worksheet
         $sheet = trainingpath_report_excel_add_worksheet($workbook,
             array(
@@ -125,16 +141,14 @@ if ($format == 'lms') {
                 (object)array('content'=>$learningpath->name, 'size'=>16, 'bold'=>1),
                 (object)array('content'=>'['.$certificate->code.'] '.$certificate->title, 'size'=>13, 'bold'=>1)
             ),
-            array('progress', 'time', 'success'),
-            array(30),
+            $indicators,
+            [30],
+            $columnsNumber,
             $certificate->code
         );
     
-       // Get data
-        $data = trainingpath_report_get_learners_progress_data($cmid, $learningpath, $group_id, $certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, $context_module, $evalOnly, $url);
-    
         // Add table
-        trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header);
+        trainingpath_report_excel_add_table($workbook, $sheet, $data->rows, $data->header, true);
         
         // Add comment
         $commentRecord = trainingpath_report_comments_get_record($certificate_id, EATPL_ITEM_TYPE_CERTIFICATE, null, $group_id);

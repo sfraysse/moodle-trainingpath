@@ -44,6 +44,11 @@ trainingpath_check_view_permission_or_redirect($course, $cm);
 
 
 
+//------------------------------------------- Logs -------------------------------------------//
+
+trainingpath_trigger_path_event('page_viewed', $course, $cm, $learningpath, ['page' => 'gradebook']);
+
+
 //------------------------------------------- Page setup -------------------------------------------//
 
 trainingpath_view_setup_page($course, 'gradebook');

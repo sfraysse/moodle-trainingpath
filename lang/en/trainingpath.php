@@ -38,8 +38,10 @@ $string['trainingpath:editschedule'] = 'Edit a training schedule';
 
 // ------------------------- Settings ---------------------------
 
-$string['prefered_activity_access_eval'] = 'Prefered activity access (assessment)';
-$string['prefered_activity_access_eval_desc'] = 'Default value of the access setting on assessments scheduling.';
+$string['prefered_activity_access_eval'] = 'Prefered activity access (initial assessment)';
+$string['prefered_activity_access_eval_desc'] = 'Default value of the access setting on initial assessments scheduling.';
+$string['prefered_activity_access_remedial'] = 'Prefered activity access (remedial assessment)';
+$string['prefered_activity_access_remedial_desc'] = 'Default value of the access setting on remedial assessments scheduling.';
 $string['prefered_activity_access'] = 'Prefered activity access (other)';
 $string['prefered_activity_access_desc'] = 'Default value of the access setting on activities scheduling other than test.';
 
@@ -329,10 +331,12 @@ $string['managing_tracking'] = 'Managing tracking';
 $string['user'] = 'User';
 $string['status'] = 'Status';
 $string['force_completion'] = 'Force completion';
+$string['force_time'] = 'Time (mn):';
 $string['force_scores'] = 'Force scores';
 $string['reporting'] = 'Reporting';
 $string['learners'] = 'Learners';
 $string['global'] = 'Global';
+$string['avg'] = 'Avg';
 $string['average'] = 'Average';
 $string['average_remedial'] = 'Average (remediated learners)';
 $string['group_progress'] = 'Group progress';
@@ -348,11 +352,17 @@ $string['group_results_'] = 'Results of group: {$a}';
 $string['xls_progress'] = 'Progress';
 $string['xls_time'] = 'Time';
 $string['xls_success'] = 'Score';
+$string['xls_first'] = 'Init Avg';
+$string['xls_last'] = 'Final Avg';
+$string['xls_initial'] = 'Initial';
 $string['xls_remedial'] = 'Remedial';
 $string['xls_export'] = 'Export (Excel)';
+$string['xls_export_global'] = 'Global export (Excel)';
 $string['xls_export_certificates'] = 'Export themes (Excel)';
 $string['xls_export_users'] = 'Export users (Excel)';
 $string['xls_export_sequences'] = 'Export sequences (Excel)';
+$string['xls_export_simple'] = 'Simple export (evaluation data only)';
+$string['xls_export_full'] = 'Full export (time, progress and evaluation data)';
 
 
 // ------------------------- Calendars ---------------------------
@@ -403,7 +413,6 @@ $string['statistics'] = 'Statistics';
 
 // ------------------------- Privacy ---------------------------
 
-
 // SCORM Lite tracks
 $string['privacy:metadata:trainingpath_scoes_track'] = 'Data tracked by the SCORM Lite activities';
 $string['privacy:metadata:scoes_track:userid'] = 'The ID of the user who accessed the SCORM Lite activity';
@@ -445,4 +454,15 @@ $string['items'] = 'Items';
 $string['mystatus'] = 'My status';
 $string['comments'] = 'Comments';
 $string['itemdescr'] = 'Item description';
+
+
+// ------------------------- Events ---------------------------
+
+$string['event:page_viewed'] = 'Page viewed';
+$string['event:item_viewed'] = 'Item viewed';
+$string['event:item_completed'] = 'Item completed';
+$string['event:item_result_updated'] = 'Item result updated';
+$string['event:item_completion_forced'] = 'Item completion forced';
+$string['event:item_result_forced'] = 'Item result forced';
+
 

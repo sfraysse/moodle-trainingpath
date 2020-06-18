@@ -42,11 +42,15 @@ if ($ADMIN->fulltree) {
     // Player close button
 	$settings->add(new admin_setting_configcheckbox('trainingpath/displayclosebutton', get_string('displayclosebutton', 'scormlite'), get_string('displayclosebuttondesc', 'scormlite'), 0));
 
-	// Prefered activity access for tests: On Completion / Access
+	// Prefered activity access for intiial tests
 	$options = trainingpath_access_select([EATPL_ACCESS_ON_COMPLETION, EATPL_ACCESS_OPEN, EATPL_ACCESS_CLOSED]);
 	$settings->add(new admin_setting_configselect('trainingpath/prefered_activity_access_eval', get_string('prefered_activity_access_eval', 'trainingpath'), get_string('prefered_activity_access_eval_desc', 'trainingpath'), EATPL_ACCESS_ON_COMPLETION, $options));
 
-	// Prefered activity access for others: On Completion / Access
+	// Prefered activity access for remedial tests
+	$options = trainingpath_access_select([EATPL_ACCESS_AS_REMEDIAL, EATPL_ACCESS_OPEN, EATPL_ACCESS_CLOSED]);
+	$settings->add(new admin_setting_configselect('trainingpath/prefered_activity_access_remedial', get_string('prefered_activity_access_remedial', 'trainingpath'), get_string('prefered_activity_access_remedial_desc', 'trainingpath'), EATPL_ACCESS_AS_REMEDIAL, $options));
+
+	// Prefered activity access for others
 	$options = trainingpath_access_select([EATPL_ACCESS_ON_COMPLETION, EATPL_ACCESS_OPEN]);
 	$settings->add(new admin_setting_configselect('trainingpath/prefered_activity_access', get_string('prefered_activity_access', 'trainingpath'), get_string('prefered_activity_access_desc', 'trainingpath'), EATPL_ACCESS_ON_COMPLETION, $options));
 

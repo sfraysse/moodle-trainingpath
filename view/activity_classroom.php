@@ -46,6 +46,11 @@ require_login($course, false, $cm);
 $scheduleInfo = trainingpath_check_view_permission_or_redirect($course, $cm, $batch, $sequence, $via, $item);
 
 
+//------------------------------------------- Logs -------------------------------------------//
+
+trainingpath_trigger_item_event('item_viewed', $course, $cm, $learningpath, $item);
+
+
 //------------------------------------------- Page setup -------------------------------------------//
 
 $breadcrumb = array();

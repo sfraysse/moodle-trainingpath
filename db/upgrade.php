@@ -21,10 +21,30 @@
 defined('MOODLE_INTERNAL') || die;
 
 function xmldb_trainingpath_upgrade($oldversion) {
-    global $CFG;
+    global $DB;
+    $dbman = $DB->get_manager();
 
-    // Moodle v3.2.0 release upgrade line.
-    // Put any upgrade step following this.
+    // Add UUID column on trainingpath_item table.
+
+    if ($oldversion < 2018050801) {
+
+        $table = new xmldb_table('trainingpath_item');
+
+        // Add the column.
+        $field = new xmldb_field('uuid', XMLDB_TYPE_CHAR, '36', null, null, null, null, 'ref_id');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Add the index.
+        $index = new xmldb_index('uuid', XMLDB_INDEX_UNIQUE, array('uuid'));
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        // Savepoint.
+        upgrade_mod_savepoint(true, 2018050801, 'trainingpath');
+    }
 
     return true;
 }

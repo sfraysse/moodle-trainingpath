@@ -52,6 +52,10 @@ $permission = trainingpath_check_tutor_permission($course, $cm, $groupId);
 
 $session = new stdClass();
 $session->users = trainingpath_report_get_users_and_tracks($group->id, $context_module, $activity->id);
+foreach ($session->users as $user) {
+    $track = isset($user->track) ? $user->track : null;
+    $user->forcableTime = trainingpath_report_get_forcable_time($activity, $track);
+}
 $session->learningpath = $learningpath;
 
 
@@ -73,9 +77,10 @@ if ($mform->is_cancelled()) {
 	// Prepare data 
 	$mform->data_postprocessing($data, $context_module);
 	
-	// Record data
+    // Record data
 	foreach($data->force as $userId => $force) {
-		trainingpath_report_force_content_completion($learningpath, $userId, $force, $activity);
+        $time = intval($data->time[$userId] * 60);
+		trainingpath_report_force_content_completion($course, $cm, $learningpath, $userId, $force, $activity, $time);
 	}
 	
 	// Redirect

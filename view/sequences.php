@@ -47,6 +47,15 @@ if ($certificate_id) trainingpath_check_view_permission_or_redirect($course, $cm
 else trainingpath_check_view_permission_or_redirect($course, $cm, $batch);
 
 
+//------------------------------------------- Logs -------------------------------------------//
+
+if ($certificate_id) {
+	trainingpath_trigger_item_event('item_viewed', $course, $cm, $learningpath, $certificate);
+} else {
+	trainingpath_trigger_item_event('item_viewed', $course, $cm, $learningpath, $batch);
+}
+
+
 //------------------------------------------- Page setup -------------------------------------------//
 
 $breadcrumb = array();

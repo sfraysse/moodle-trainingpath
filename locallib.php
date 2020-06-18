@@ -269,7 +269,7 @@ function trainingpath_get_default_activity_schedule($type, $complementary = fals
 			$schedule->access = get_config('trainingpath', 'prefered_activity_access');
 			break;
 		case EATPL_ACTIVITY_TYPE_EVAL :
-			if ($remedial) $schedule->access = EATPL_ACCESS_AS_REMEDIAL;
+			if ($remedial) $schedule->access = get_config('trainingpath', 'prefered_activity_access_remedial');
 			else $schedule->access = get_config('trainingpath', 'prefered_activity_access_eval');
 			break;
 		case EATPL_ACTIVITY_TYPE_CLASSROOM :
@@ -599,4 +599,46 @@ class trainingpath_content_file_info extends file_info_stored {
 		return $empty;
 	}
 }
+
+
+/*************************************************************************************************
+ *                                             Events                                        
+ *************************************************************************************************/
+
+
+function trainingpath_trigger_path_event($eventname, $course, $cm, $activity, $other = []) {
+	$data = [
+		'objectid' => $activity->id,
+		'context' => context_module::instance($cm->id),
+	];
+	if (!empty($other)) {
+		$data['other'] = $other;
+	}
+	$eventclass = '\mod_trainingpath\event\\' . $eventname;
+	$event = $eventclass::create($data);
+	$event->add_record_snapshot('course', $course);
+	$event->add_record_snapshot('trainingpath', $activity);
+	$event->add_record_snapshot('course_modules', $cm);
+	$event->trigger();
+}
+
+function trainingpath_trigger_item_event($eventname, $course, $cm, $activity, $item, $userid = null, $other = []) {
+	$data = [
+		'objectid' => $item->id,
+		'context' => context_module::instance($cm->id),
+	];
+	if (!is_null($userid)) {
+		$data['relateduserid'] = $userid;
+	}
+	if (!empty($other)) {
+		$data['other'] = $other;
+	}
+	$eventclass = '\mod_trainingpath\event\\' . $eventname;
+	$event = $eventclass::create($data);
+	$event->add_record_snapshot('course', $course);
+	$event->add_record_snapshot('trainingpath', $activity);
+	$event->add_record_snapshot('course_modules', $cm);
+	$event->trigger();
+}
+
 

@@ -330,7 +330,9 @@ function trainingpath_report_get_children_items_rows($userId, $groupId, $type, $
 							}
 							if ($allowed) {
 								$evalTrack = trainingpath_report_get_user_track($userId, $eval->id, $eval->type);
-								$reviewInitialUrl = new moodle_url('/mod/scormlite/player.php', array('scoid'=>$eval->ref_id, 'userid'=>$userId, 'attempt'=>$evalTrack->last_attempt, 'backurl'=>$backurl->full));
+								if ($evalTrack) {
+									$reviewInitialUrl = new moodle_url('/mod/scormlite/player.php', array('scoid'=>$eval->ref_id, 'userid'=>$userId, 'attempt'=>$evalTrack->last_attempt, 'backurl'=>$backurl->full));
+								}
 							}
 						}
 					}
@@ -345,7 +347,9 @@ function trainingpath_report_get_children_items_rows($userId, $groupId, $type, $
 							}
 							if ($allowed) {
 								$evalTrack = trainingpath_report_get_user_track($userId, $eval->id, $eval->type);
-								$reviewRemedialUrl = new moodle_url('/mod/scormlite/player.php', array('scoid'=>$eval->ref_id, 'userid'=>$userId, 'attempt'=>$evalTrack->last_attempt, 'backurl'=>$backurl->full));
+								if ($evalTrack) {
+									$reviewRemedialUrl = new moodle_url('/mod/scormlite/player.php', array('scoid'=>$eval->ref_id, 'userid'=>$userId, 'attempt'=>$evalTrack->last_attempt, 'backurl'=>$backurl->full));
+								}
 							}
 						}
 					}
@@ -571,12 +575,12 @@ function trainingpath_report_excel_get_workbook() {
 	return $workbook;
 }
 
-function trainingpath_report_excel_add_worksheet($workbook, $pageTitles, $indicators = array(), $cols = array(), $sheetTitle = '') {
+function trainingpath_report_excel_add_worksheet($workbook, $pageTitles, $indicators = [], $colsWidth = [], $headerColsNum = 6, $sheetTitle = '') {
 	$worksheet = $workbook->add_worksheet($sheetTitle);
 	
 	// Columns width
-	for($i=0; $i<count($cols); $i++) {
-		$worksheet->set_column($i, $i, $cols[$i]);
+	for($i=0; $i<count($colsWidth); $i++) {
+		$worksheet->set_column($i, $i, $colsWidth[$i]);
 	}
 	
 	// Page titles
@@ -586,7 +590,7 @@ function trainingpath_report_excel_add_worksheet($workbook, $pageTitles, $indica
 		if (isset($pageTitle->italic) && $pageTitle->italic) $style['italic'] = 1;
 		if (isset($pageTitle->bold) && $pageTitle->bold) $style['bold'] = 1;
 		if (isset($pageTitle->size)) $style['size'] = $pageTitle->size;
-		$worksheet->merge_cells($line, 0, $line, 5);
+		$worksheet->merge_cells($line, 0, $line, $headerColsNum - 1);
 		$worksheet->write_string($line, 0, $pageTitle->content, $workbook->add_format($style));
 		$line++;
 	}
@@ -601,60 +605,94 @@ function trainingpath_report_excel_add_comment($workbook, &$sheet, $title, $comm
 	$sheet->line += 2;
 }
 
-function trainingpath_report_excel_add_table($workbook, &$sheet, $rows, $head = null, $includeRemedial = false, $hideHead = false) {
+function trainingpath_report_excel_add_table($workbook, &$sheet, $rows, $head = null, $includeRemedial = false, $hideHead = false, $topLevel = false, $hideFirst = false) {
 	
 	// Header
 	if (isset($head) && !$hideHead) {
 		$col = 0;
+		$excelCol = 0;
 		$format = array('bold'=>1, 'color'=>'white');
 		foreach($head->cells as $cell) {
+			if ($col == 1 && $hideFirst) {
+				$col++;
+				continue;
+			}
 			if ($col > 0) $format['bg_color'] = 'grey';
-			trainingpath_report_excel_write_header_cell($workbook, $sheet, $col, $cell, $format, $includeRemedial);
+			trainingpath_report_excel_write_header_cell($workbook, $sheet, $excelCol, $cell, $format, $includeRemedial);
+			$excelCol++;
 			$col++;
 		}
 	}
 	$sheet->line++;
 	
 	// Sub Header
-	if (isset($head) && count($sheet->indicators) > 1) {
+	if (isset($head) && (count($sheet->indicators) > 1 || $includeRemedial)) {
 		$col = 1;
+		$excelCol = 1;
 		$format = array('bold'=>1, 'color'=>'black', 'bg_color'=>'silver');
 		for ($i = 1; $i < count($head->cells); $i++) {
+			if ($col == 1 && $hideFirst) {
+				$col++;
+				continue;
+			}
+			$lastColumnSet = ($i == count($head->cells) - 1);
 			foreach($sheet->indicators as $indicator) {
-				$subcell = (object)array('content_pure'=>get_string('xls_'.$indicator, 'trainingpath'));
-				trainingpath_report_excel_write_simple_cell($workbook, $sheet, $col, $subcell, $format, $includeRemedial);
+				if ($indicator == 'success' && $includeRemedial) {
+					if ($topLevel || $lastColumnSet) {
+						$subcell = (object)array('content_pure' => get_string('xls_first', 'trainingpath'));
+					} else {
+						$subcell = (object)array('content_pure' => get_string('xls_initial', 'trainingpath'));
+					}
+				} else {
+					$subcell = (object)array('content_pure' => get_string('xls_'.$indicator, 'trainingpath'));
+				}
+				trainingpath_report_excel_write_simple_cell($workbook, $sheet, $excelCol, $subcell, $format, $includeRemedial);
+				$excelCol++;
 				$col++;
 			}
 			if ($includeRemedial) {
-				$subcell = (object)array('content_pure'=>get_string('xls_remedial', 'trainingpath'));
-				trainingpath_report_excel_write_simple_cell($workbook, $sheet, $col, $subcell, $format, $includeRemedial);
+				if ($topLevel || $lastColumnSet) {
+					$subcell = (object)array('content_pure'=>get_string('xls_last', 'trainingpath'));
+				} else {
+					$subcell = (object)array('content_pure'=>get_string('xls_remedial', 'trainingpath'));
+				}
+				trainingpath_report_excel_write_simple_cell($workbook, $sheet, $excelCol, $subcell, $format, $includeRemedial);
+				$excelCol++;
 				$col++;
 			}
 		}
+		$sheet->line++;
 	}
-	$sheet->line++;
 	
 	// Rows
 	foreach($rows as $row) {
 		$col = 0;
+		$excelCol = 0;
 		$format = array('border'=>1);
 		foreach($row->cells as $cell) {
-			if ($col == 0) trainingpath_report_excel_write_simple_cell($workbook, $sheet, $col, $cell, $format, $includeRemedial);
-			else trainingpath_report_excel_write_data_cell($workbook, $sheet, $col, $cell, $format, $includeRemedial);
+			if ($col == 1 && $hideFirst) {
+				$col++;
+				continue;
+			}
+			if ($col == 0) trainingpath_report_excel_write_simple_cell($workbook, $sheet, $excelCol, $cell, $format, $includeRemedial);
+			else trainingpath_report_excel_write_data_cell($workbook, $sheet, $excelCol, $cell, $format, $includeRemedial);
 			$col++;
+			$excelCol++;
 		}
 		$sheet->line++;
 	}
 	$sheet->line += 2;
 }
 
-function trainingpath_report_excel_write_header_cell($workbook, &$sheet, $col, $cell, $format = array(), $includeRemedial = false) {
+function trainingpath_report_excel_write_header_cell($workbook, &$sheet, $col, $cell, $format = [], $includeRemedial = false) {
 	$format['size'] = 10;
-	$mergeCount = count($sheet->indicators)-1;
+	$mergeCount = count($sheet->indicators) - 1;
 	if ($includeRemedial) $mergeCount++;
 	isset($cell->content_pure) ? $content = $cell->content_pure : $content = '';
 	if ($col > 0) {
-		$col = ($col-1) * count($sheet->indicators) + 1;
+		$cellCount = count($sheet->indicators);
+		if ($includeRemedial) $cellCount++;
+		$col = ($col-1) * $cellCount + 1;
 		$sheet->worksheet->merge_cells($sheet->line, $col, $sheet->line, $col+$mergeCount);
 	}
 	$sheet->worksheet->write_string($sheet->line, $col, $content, $workbook->add_format($format));
@@ -667,11 +705,13 @@ function trainingpath_report_excel_write_simple_cell($workbook, &$sheet, $col, $
 	$sheet->worksheet->write_string($sheet->line, $col, $content, $workbook->add_format($format));
 }
 
-function trainingpath_report_excel_write_data_cell($workbook, &$sheet, $col, $cell, $format = array(), $includeRemedial = false) {
+function trainingpath_report_excel_write_data_cell($workbook, &$sheet, $col, $cell, $format = [], $includeRemedial = false) {
 	$format['size'] = 10;
 	$format['align'] = 'center';
 	if (isset($cell->class_xls) && $cell->class_xls == 'bold') $format['bold'] = 1;
-	if ($col > 0) $col = ($col-1) * count($sheet->indicators) + 1;
+	$cellCount = count($sheet->indicators);
+	if ($includeRemedial) $cellCount++;
+	if ($col > 0) $col = ($col-1) * $cellCount + 1;
 	foreach($sheet->indicators as $indicator) {
 		if (isset($cell->data) && $cell->data && isset($cell->data->$indicator) && $cell->data->$indicator) {
 			if ($indicator == 'progress') {
@@ -820,6 +860,7 @@ function trainingpath_report_comments_get_form($url, $urlParams, $itemId, $itemT
 	}	
 	
 	// Generate form
+	$url = (new moodle_url($url))->out();
 	$label = get_string('comments', 'trainingpath');
 	$html = '<div class="trainingpath-comments">
 				<form action="'.$url.'" method="POST">
