@@ -29,26 +29,51 @@ Added to 3.5.1
 # Tests
 
 ## Basic usage
-- 
-
-## Settings
-- Passing score
-- File extensions
-- Display close button
-- Prefered activity access (initial assessment)
-- Prefered activity access (remedial assessment)
-- Prefered activity access (other)
-
-## Operations
-- Delete attempts
-- Reset
-- Duplicate
-- Backup / Restore
+- Create simple struct with all activity types (incl. remedial) - OK
+- Theme duration 60 min - OK
+- Sequence duration 2 days - OK
+- Activities duration 10 min - OK
+- Add calendar - OK
+- Generate schedule - OK
+- Open all activities - OK
+- As a learner, play all activities - OK
+- Report Learners Progress - OK
+    - Comment - OK
+    - Global export - OK
+    - Export themes - OK
+    - Export users - OK
+    - Global export (full) - OK
+    - Export themes (full) - OK
+    - Export users (full) - OK
+- Report Learner - OK
+    - Comment global - OK
+    - Comment theme - OK
+    - Export - OK
+- Report Theme - OK
+    - Comment - OK
+    - Export - OK
+    - Export Sequences - OK
+- Report Sequence - OK
+    - Comment - OK
+    - Export - OK
+- Report Content - OK
+    - Force Completion - OK
+    - Force Time spent - OK
+- Report Assessment - OK
+    - Force Score - OK
+- Report Virtual/Onsite - OK
+    - Add file - OK
+    - Mark Time + Completion - OK
 
 ## Data privacy
-- Check Admin > Users > Privacy and policies > Plugin privacy registry
-- Run CRON
-- Download and explore data
+- Check Admin > Users > Privacy and policies > Plugin privacy registry - OK
+- Run CRON - OK
+- Download and explore data - All users visible ?????
+
+## Operations
+- Duplicate - OK
+- Backup / Restore - OK
+- Reset - OK
 
 ## Events
 - Attempt completed
@@ -69,20 +94,18 @@ Added to 3.5.1
 ## xAPI
 
 ### Sync
-- Attempt completed
+- Attempt completed - OK
 - Attempt failed
-- Attempt initialized
-- Attempt launched
-- Attempt passed
-- Attempt terminated
-- Course module viewed
-- Item completed
+- Attempt initialized - OK
+- Attempt launched - OK
+- Attempt passed - OK
+- Attempt terminated - OK
+- Course module viewed - OK
+- Item completed - OK
 - Item completion forced
 - Item result forced
-- Item result updated
-- Item viewed
-- Page viewed
-- User graded
+- Item viewed - OK
+- Page viewed - OK
 
 ### Async
 Errors with Trax Logs which has not been upgraded yet !!!!!!!!!!!!!!!!!!!!!!
