@@ -43,7 +43,7 @@ class backup_trainingpath_activity_structure_step extends backup_activity_struct
         $item = new backup_nested_element('item', array('id'), array(
             'type', 'code', 'title', 'description', 'parent_id', 'parent_position',
             'grouping_id', 'grouping_position', 'previous_id', 'duration', 'duration_up', 'duration_down',
-            'activity_type', 'complementary', 'evaluation', 'remedial', 'information', 'ref_id', 'uuid'
+            'activity_type', 'complementary', 'evaluation', 'remedial', 'information', 'ref_id'
         ));
 
 		if ($userinfo) {
